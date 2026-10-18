@@ -452,17 +452,20 @@
 
   /* ---------- Autocomplete search (Uji Kenaikan siswa) ---------- */
   .autocomplete-wrap{position:relative;}
+  /* Kartu yang berisi dropdown dinaikkan lapisannya, supaya daftar hasil tidak
+     tertimpa kartu di bawahnya (tiap kartu beranimasi = lapisan sendiri). */
+  .card.has-dropdown, .card:has(.autocomplete-wrap){position:relative; z-index:30; overflow:visible;}
   .autocomplete-results{
-    position:absolute; left:0; right:0; top:calc(100% + 4px); z-index:40;
-    background:var(--surface); border:1px solid var(--border); border-radius:10px;
-    box-shadow:var(--shadow); max-height:280px; overflow-y:auto;
+    position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:40;
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    box-shadow:0 12px 32px rgba(15,40,70,0.18); max-height:300px; overflow-y:auto; padding:4px;
   }
   .autocomplete-item{
-    padding:9px 14px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:10px;
-    border-bottom:1px solid var(--border); font-size:13.5px;
+    padding:9px 12px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:10px;
+    border-bottom:none; border-radius:8px; font-size:13.5px;
   }
   .autocomplete-item:last-child{border-bottom:none;}
-  .autocomplete-item:hover{background:var(--teal-soft);}
+  .autocomplete-item:hover, .autocomplete-item.active{background:var(--teal-soft);}
   .autocomplete-item-sub{font-size:11.5px; color:var(--ink-muted); white-space:nowrap;}
   .autocomplete-empty{padding:12px 14px; font-size:13px; color:var(--ink-muted); text-align:center;}
 
@@ -2350,7 +2353,7 @@ function renderUjiPage(){
       <span>&#8505;</span>
       <div>Pilih siswa, isi nilai tiap materi, lalu simpan hasilnya.</div>
     </div>
-    <div class="card" style="padding:20px;">
+    <div class="card has-dropdown" style="padding:20px;">
       <label style="font-size:12.5px; font-weight:600; color:var(--ink-muted); display:block; margin-bottom:6px;">Pilih Siswa yang Diuji</label>
       <div class="autocomplete-wrap" style="max-width:480px;">
         <input type="text" id="ujiSiswaSearchInput" class="login-input" autocomplete="off"
@@ -2436,6 +2439,7 @@ function bindUjiEvents(){
     });
     searchInput.addEventListener('focus', ()=>{
       resultsBox.style.display = 'block';
+      if(state.ujiSiswaId) searchInput.select();
     });
     searchInput.addEventListener('blur', ()=>{
       // small delay so a click on a result registers before hiding
