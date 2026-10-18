@@ -2794,7 +2794,8 @@ function printBlankoPenilaian(record){
   .ket-box .catatan-text{ text-align:center; }
   .sign-cols{ flex:1; display:flex; justify-content:space-between; text-align:center; font-size:13px; }
   .sign-col{ flex:1; }
-  .sign-name{ margin-top:50px; font-weight:bold; }
+  .sign-label{ min-height:2.6em; line-height:1.3; }
+  .sign-name{ margin-top:50px; font-weight:bold; line-height:1.3; }
   @media print{ .no-print{ display:none; } }
 </style>
 </head>
@@ -2842,11 +2843,11 @@ function printBlankoPenilaian(record){
     </div>
     <div class="sign-cols">
       <div class="sign-col">
-        Nama Penguji<br>Ustadz/ah
+        <div class="sign-label">Nama Penguji<br>Ustadz/ah</div>
         <div class="sign-name">( ${escapeHtml(record.penguji)} )</div>
       </div>
       <div class="sign-col">
-        Waka. Keagamaan
+        <div class="sign-label">Waka. Keagamaan</div>
         <div class="sign-name">( Ustadz M. Zaenurrozikin, S.Pd )</div>
       </div>
     </div>
