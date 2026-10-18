@@ -162,18 +162,13 @@
   #content.page-enter{ animation:pageFadeSlideIn 0.32s ease both; }
   #content.page-enter .card,
   #content.page-enter .level-tabs,
-  #content.page-enter .dashboard-tile,
   #content.page-enter > div{
     animation:pageFadeSlideIn 0.36s ease both;
   }
-  #content.page-enter .card:nth-of-type(2),
-  #content.page-enter .dashboard-tile:nth-of-type(2){ animation-delay:0.04s; }
-  #content.page-enter .card:nth-of-type(3),
-  #content.page-enter .dashboard-tile:nth-of-type(3){ animation-delay:0.08s; }
-  #content.page-enter .card:nth-of-type(4),
-  #content.page-enter .dashboard-tile:nth-of-type(4){ animation-delay:0.12s; }
-  #content.page-enter .card:nth-of-type(5),
-  #content.page-enter .dashboard-tile:nth-of-type(5){ animation-delay:0.16s; }
+  #content.page-enter .card:nth-of-type(2){ animation-delay:0.04s; }
+  #content.page-enter .card:nth-of-type(3){ animation-delay:0.08s; }
+  #content.page-enter .card:nth-of-type(4){ animation-delay:0.12s; }
+  #content.page-enter .card:nth-of-type(5){ animation-delay:0.16s; }
   @media (prefers-reduced-motion: reduce){
     #content.page-enter, #content.page-enter *{ animation:none !important; }
   }
@@ -188,15 +183,13 @@
   .save-dot.error{background:#C0594A;}
   .lock-badge{display:inline-block; font-size:11px; margin-right:3px;}
   .pb-search{margin-bottom:14px;}
-  .pb-results{margin-top:8px; background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:var(--shadow);}
-  .pb-result{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; border-bottom:1px solid var(--border); cursor:pointer;}
-  .pb-result:last-child{border-bottom:none;}
-  .pb-result:hover{background:var(--teal-soft);}
-  .pb-result .pb-name{font-weight:600;}
-  .pb-result .pb-meta{font-size:12px; color:var(--ink-muted); margin-top:2px;}
-  .pb-result .pb-room{flex-shrink:0; font-weight:700; color:var(--teal-dark); background:var(--teal-soft); border-radius:999px; padding:4px 12px; font-size:12.5px;}
-  .pb-result .pb-room.none{color:#B45309; background:#FFF3D6;}
-  .pb-empty{padding:14px; color:var(--ink-muted); font-size:13px;}
+  .act-bar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; padding:12px 14px; margin:0 0 12px; border:1px solid #BCD6F0; border-radius:12px; background:var(--teal-soft);}
+  .act-bar[hidden]{display:none;}
+  .act-bar .act-title{font-weight:700; font-size:13px; color:var(--teal-dark);}
+  .act-bar select, .act-bar input[type=text]{min-width:190px;}
+  .act-bar .act-note{font-size:12.5px; color:var(--ink-muted);}
+  .act-hint{font-size:12.5px; color:var(--ink-muted); margin:0 0 12px;}
+  .act-hint[hidden]{display:none;}
   .pb-hit{background:#FFE98A; border-radius:3px; padding:0 1px;}
   .pb-chips{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 12px;}
   .pb-chip{display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:999px; font-size:12px; font-weight:600; background:var(--teal-soft); color:var(--teal-dark); border:1px solid var(--border);}
@@ -204,8 +197,6 @@
   .pb-chip.near{background:#FFF3D6; color:#B45309; border-color:#F5E2B0;}
   .pb-summary{font-size:13px; margin:0 0 12px; padding:10px 14px; border-radius:10px; background:var(--teal-soft); color:var(--ink);}
   .pb-summary.none{background:#FFF3D6;}
-  .room-card.flash{animation:roomFlash 1.8s ease 1;}
-  @keyframes roomFlash{0%,100%{box-shadow:var(--shadow);} 20%,60%{box-shadow:0 0 0 4px rgba(74,144,217,.55), var(--shadow);}}
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
 
   /* ---------- Navbar atas: notifikasi & user chip ---------- */
@@ -237,11 +228,6 @@
   .notif-item .n-time{font-size:11px; color:var(--ink-muted); margin-top:2px;}
   @media (max-width:600px){ .topbar-user-info{display:none;} }
 
-  /* ---------- Avatar inisial di tabel ---------- */
-  .row-avatar{
-    width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
-    font-size:12px; font-weight:700; color:#fff; margin-right:8px; flex-shrink:0; vertical-align:middle;
-  }
   .status-badge{
     display:inline-block; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:700;
   }
@@ -320,8 +306,6 @@
     width:30px; height:30px; padding:0; border-radius:50%;
     display:inline-flex; align-items:center; justify-content:center; font-size:13px;
   }
-  .btn-gold{background:var(--gold); color:#3a2c07;}
-  .btn-gold:hover{opacity:.9;}
 
   /* ---------- Tables ---------- */
   table.data-table{width:100%; border-collapse:collapse; font-size:13px;}
@@ -374,25 +358,9 @@
   .level-tab:hover{background:rgba(0,0,0,0.045); color:var(--ink);}
   .level-tab.active{background:var(--teal); border-color:var(--teal); color:#fff; box-shadow:0 2px 6px rgba(20,40,80,0.2);}
 
-  .cetak-mode-tabs{display:flex; gap:8px; margin-bottom:16px;}
-  .cetak-mode-tab{
-    padding:9px 18px; border-radius:12px; font-size:13px; font-weight:700; cursor:pointer;
-    border:1px solid var(--border); background:#fff; color:var(--ink-muted); user-select:none;
-  }
-  .cetak-mode-tab.active{background:var(--teal-dark); border-color:var(--teal-dark); color:#fff;}
-
   .empty-state{text-align:center; padding:50px 20px; color:var(--ink-muted);}
   .readonly-text{display:inline-block; padding:6px 4px; color:var(--ink); font-size:13.5px;}
 
-  /* ---------- 3D Column Chart (dashboard) ---------- */
-  .chart3d-wrap{ display:flex; align-items:flex-end; gap:20px; padding:30px 14px 8px; overflow-x:auto; }
-  .chart3d-item{ display:flex; flex-direction:column; align-items:center; flex:0 0 auto; }
-  .chart3d-value{ font-size:12px; font-weight:700; color:var(--ink); margin-bottom:8px; white-space:nowrap; }
-  .chart3d-col{ position:relative; width:40px; height:150px; display:flex; align-items:flex-end; }
-  .chart3d-front{ position:relative; width:100%; border-radius:3px 3px 0 0; box-shadow:0 2px 4px rgba(0,0,0,0.12); }
-  .chart3d-side{ position:absolute; top:0; right:-10px; width:10px; height:100%; transform:skewY(38deg); transform-origin:top left; filter:brightness(0.72); border-radius:0 2px 0 0; }
-  .chart3d-top{ position:absolute; top:-8px; left:0; width:100%; height:8px; transform:skewX(-38deg); transform-origin:bottom left; filter:brightness(1.3); border-radius:3px 3px 0 0; }
-  .chart3d-label{ font-size:11px; color:var(--ink-muted); margin-top:10px; text-align:center; width:64px; line-height:1.3; }
   .empty-state .big{font-family:var(--font-display); font-size:18px; color:var(--ink); margin-bottom:6px;}
 
   .pagination{display:flex; gap:6px; align-items:center; justify-content:flex-end; margin-top:12px; font-size:12.5px; color:var(--ink-muted);}
@@ -470,6 +438,15 @@
   .login-label{display:block; text-align:left; font-size:12px; font-weight:600; color:var(--ink-muted); margin:14px 0 5px;}
   .login-input{width:100%; padding:11px 14px; border:1px solid var(--border); border-radius:10px; font-size:14px; font-family:var(--font-body); background:var(--bg);}
   .login-input:focus{outline:none; border-color:var(--teal); background:var(--surface);}
+  .pw-wrap{position:relative;}
+  .pw-wrap .login-input{padding-right:44px;}
+  .pw-toggle{position:absolute; top:50%; right:6px; transform:translateY(-50%); width:34px; height:34px; display:flex; align-items:center; justify-content:center; border:none; background:transparent; color:var(--ink-muted); border-radius:8px; cursor:pointer; padding:0;}
+  .pw-toggle:hover{color:var(--teal-dark); background:rgba(0,0,0,0.05);}
+  .pw-toggle:focus-visible{outline:2px solid var(--teal); outline-offset:1px;}
+  .pw-toggle svg{width:20px; height:20px; display:block;}
+  .pw-toggle .eye-off{display:none;}
+  .pw-toggle.showing .eye-on{display:none;}
+  .pw-toggle.showing .eye-off{display:block;}
   .login-error{color:var(--rose); font-size:12.5px; min-height:18px; margin-top:10px; text-align:left;}
   .login-hint{font-size:11.5px; color:var(--ink-muted); margin-top:16px;}
 
@@ -601,18 +578,20 @@
         <button type="button" class="program-opt" data-program="administrator">Administrator</button>
       </div>
       <form id="loginForm">
-        <label class="login-label">Email (atau Username lama)</label>
+        <label class="login-label">Email</label>
         <input type="text" id="loginUsername" class="login-input" autocomplete="username" placeholder="nama@sekolah.sch.id">
         <label class="login-label">Password</label>
-        <input type="password" id="loginPassword" class="login-input" autocomplete="current-password" placeholder="Masukkan password">
-        <div id="loginPengujiNameWrap" style="display:none;">
-          <label class="login-label">Nama Penguji (untuk tanda tangan blanko)</label>
-          <input type="text" id="loginPengujiName" class="login-input" placeholder="Nama lengkap Anda">
+        <div class="pw-wrap">
+          <input type="password" id="loginPassword" class="login-input" autocomplete="current-password" placeholder="Masukkan password">
+          <button type="button" id="togglePassword" class="pw-toggle" aria-label="Tampilkan password" title="Tampilkan password">
+            <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a19.8 19.8 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 7 11 7a19.7 19.7 0 0 1-3.17 4.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
         </div>
         <div id="loginError" class="login-error"></div>
         <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:12px; margin-top:10px; border-radius:10px;">Masuk</button>
       </form>
-      <div class="login-hint">Hubungi admin sekolah kalau lupa username/password.</div>
+      <div class="login-hint">Hubungi admin sekolah kalau lupa email/password.</div>
       <div id="storageModeHint" class="login-hint" style="margin-top:4px;"></div>
     </div>
     <div class="login-side-panel">
@@ -701,8 +680,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script>
-const SEED_SISWA = [{"no": 1, "nama": "ALMER MOUZA SYAZANI", "kelas": "1A", "tilawati": "", "id": "s1"}, {"no": 2, "nama": "ANINDYA RAHMAH MARZUQI", "kelas": "1A", "tilawati": "", "id": "s2"}, {"no": 3, "nama": "ARKA VIRENDRA SIDHARTA", "kelas": "1A", "tilawati": "", "id": "s3"}, {"no": 4, "nama": "ARKHA BAGUS MAHARDIKA", "kelas": "1A", "tilawati": "", "id": "s4"}, {"no": 5, "nama": "AYRA SHIRLY ALNAIRA", "kelas": "1A", "tilawati": "", "id": "s5"}, {"no": 6, "nama": "BILAL RAMADHAN", "kelas": "1A", "tilawati": "", "id": "s6"}, {"no": 7, "nama": "BINTANG MIKHAYLA ZEANOVA", "kelas": "1A", "tilawati": "", "id": "s7"}, {"no": 8, "nama": "CAHAYA SOFIA RIQI ANANTA", "kelas": "1A", "tilawati": "", "id": "s8"}, {"no": 9, "nama": "DELIO ATHALLA DIANDRA", "kelas": "1A", "tilawati": "", "id": "s9"}, {"no": 10, "nama": "DHAMAR PENGGALIH ARYA PERMANA", "kelas": "1A", "tilawati": "", "id": "s10"}, {"no": 11, "nama": "EL JIELVANCA SHAQUEENA", "kelas": "1A", "tilawati": "", "id": "s11"}, {"no": 12, "nama": "EM DZUL QORNAIN", "kelas": "1A", "tilawati": "", "id": "s12"}, {"no": 13, "nama": "FAHRI ALFARIZKI MUHAMMAD", "kelas": "1A", "tilawati": "", "id": "s13"}, {"no": 14, "nama": "GADING AR RAFIF RANGGANATA", "kelas": "1A", "tilawati": "", "id": "s14"}, {"no": 15, "nama": "GWENIA GIFTHA PRIYAMBODO", "kelas": "1A", "tilawati": "", "id": "s15"}, {"no": 16, "nama": "ILHAM HABIBI ULIL ABROR", "kelas": "1A", "tilawati": "", "id": "s16"}, {"no": 17, "nama": "INTAN NUR FADHILAH", "kelas": "1A", "tilawati": "", "id": "s17"}, {"no": 18, "nama": "JASMINE SHAQUEENA WIRANTO", "kelas": "1A", "tilawati": "", "id": "s18"}, {"no": 19, "nama": "JIBRIL QODDAFI PUTRA", "kelas": "1A", "tilawati": "", "id": "s19"}, {"no": 20, "nama": "KAYLA RAFIKA PUTRI", "kelas": "1A", "tilawati": "", "id": "s20"}, {"no": 21, "nama": "KHAYRA AZZALEA EL ZHAFIRAH", "kelas": "1A", "tilawati": "", "id": "s21"}, {"no": 22, "nama": "MICHAEL AGATA KURNIA PRATAMA", "kelas": "1A", "tilawati": "", "id": "s22"}, {"no": 23, "nama": "MUHAMMAD AJMAL FAUZUL HAQ", "kelas": "1A", "tilawati": "", "id": "s23"}, {"no": 24, "nama": "MUHAMMAD HAZWAN AKBAR NURSALIM", "kelas": "1A", "tilawati": "", "id": "s24"}, {"no": 25, "nama": "NARA SHEENA ATHARIZKA", "kelas": "1A", "tilawati": "", "id": "s25"}, {"no": 26, "nama": "NASHA ZAHRANI AZALIA", "kelas": "1A", "tilawati": "", "id": "s26"}, {"no": 27, "nama": "NAURA QISYA ISLAMADINA", "kelas": "1A", "tilawati": "", "id": "s27"}, {"no": 28, "nama": "NAZEERA AZMI NAMIAH", "kelas": "1A", "tilawati": "", "id": "s28"}, {"no": 29, "nama": "SYAIR GEMA MAULANA", "kelas": "1A", "tilawati": "", "id": "s29"}, {"no": 30, "nama": "ABRISAM FADHLY", "kelas": "1B", "tilawati": "", "id": "s30"}, {"no": 31, "nama": "AKHMAR ROSI DEFRI ADIANSYAH", "kelas": "1B", "tilawati": "", "id": "s31"}, {"no": 32, "nama": "ALTHAF ATHAILLAH WALDI", "kelas": "1B", "tilawati": "", "id": "s32"}, {"no": 33, "nama": "CLARISHA NUR KHAIRA HARSHITA RAMADHANI", "kelas": "1B", "tilawati": "", "id": "s33"}, {"no": 34, "nama": "DZAKIYYATUL MA'RIFAH ABDILLAH", "kelas": "1B", "tilawati": "", "id": "s34"}, {"no": 35, "nama": "MATTEO MAHATHIR MOHAMMAD", "kelas": "1B", "tilawati": "", "id": "s35"}, {"no": 36, "nama": "MEZZALUNA DESSYANA RAFANI", "kelas": "1B", "tilawati": "", "id": "s36"}, {"no": 37, "nama": "MIKHAYLA TAVISHA PUTRI YUNIANTO", "kelas": "1B", "tilawati": "", "id": "s37"}, {"no": 38, "nama": "MUHAMMAD AKBAR WICAKSONO", "kelas": "1B", "tilawati": "", "id": "s38"}, {"no": 39, "nama": "MUHAMMAD AL-FATIH HERIYANTO", "kelas": "1B", "tilawati": "", "id": "s39"}, {"no": 40, "nama": "MUHAMMAD ATTAILAH RAMADHAN", "kelas": "1B", "tilawati": "", "id": "s40"}, {"no": 41, "nama": "MUHAMMAD AZLAN MIYAZ AWWAB", "kelas": "1B", "tilawati": "", "id": "s41"}, {"no": 42, "nama": "MUHAMMAD BERIL ASHARI", "kelas": "1B", "tilawati": "", "id": "s42"}, {"no": 43, "nama": "MUHAMMAD FADLAN FAUZI", "kelas": "1B", "tilawati": "", "id": "s43"}, {"no": 44, "nama": "MUHAMMAD HIZQIL SYARIF RIFAI", "kelas": "1B", "tilawati": "", "id": "s44"}, {"no": 45, "nama": "MUHAMMAD SAID SURYAKUSUMA", "kelas": "1B", "tilawati": "", "id": "s45"}, {"no": 46, "nama": "MUSA", "kelas": "1B", "tilawati": "", "id": "s46"}, {"no": 47, "nama": "MUTHIA LARASATI CHAIRUNNISA", "kelas": "1B", "tilawati": "", "id": "s47"}, {"no": 48, "nama": "NOURA IZZATI ISLAMADINA", "kelas": "1B", "tilawati": "", "id": "s48"}, {"no": 49, "nama": "QIANDRA AYYUBIA ALMAHYRA", "kelas": "1B", "tilawati": "", "id": "s49"}, {"no": 50, "nama": "RANGGA AGUNG OKTA WIJAYA", "kelas": "1B", "tilawati": "", "id": "s50"}, {"no": 51, "nama": "RAYYANDRA NIZAM PRASSETIO", "kelas": "1B", "tilawati": "", "id": "s51"}, {"no": 52, "nama": "RUZAIN ALFIRDAUS", "kelas": "1B", "tilawati": "", "id": "s52"}, {"no": 53, "nama": "SHAQUILLE DANESH GIBRANKA", "kelas": "1B", "tilawati": "", "id": "s53"}, {"no": 54, "nama": "SYAKILA KHOIRUNNISA", "kelas": "1B", "tilawati": "", "id": "s54"}, {"no": 55, "nama": "TALITA AZKADINA WIYAGARA", "kelas": "1B", "tilawati": "", "id": "s55"}, {"no": 56, "nama": "TSANIA SHASMIRA FIRDAUS", "kelas": "1B", "tilawati": "", "id": "s56"}, {"no": 57, "nama": "ZEA ELVANI RAMADHANI", "kelas": "1B", "tilawati": "", "id": "s57"}, {"no": 58, "nama": "ZIONINO ATHARRAZKA ALHASIM", "kelas": "1B", "tilawati": "", "id": "s58"}, {"no": 59, "nama": "ADRIKNI BIDAYATUL AROFAH", "kelas": "1C", "tilawati": "", "id": "s59"}, {"no": 60, "nama": "AMRU", "kelas": "1C", "tilawati": "", "id": "s60"}, {"no": 61, "nama": "ANANDYA ARUM ZIANISA", "kelas": "1C", "tilawati": "", "id": "s61"}, {"no": 62, "nama": "ARDELLA LOVELY FAUZIAH", "kelas": "1C", "tilawati": "", "id": "s62"}, {"no": 63, "nama": "ARSHAD FIKAR ABQARI", "kelas": "1C", "tilawati": "", "id": "s63"}, {"no": 64, "nama": "ASH ZACKY AL FATTAH", "kelas": "1C", "tilawati": "", "id": "s64"}, {"no": 65, "nama": "AZARINE ALISHA SHAQUEENA", "kelas": "1C", "tilawati": "", "id": "s65"}, {"no": 66, "nama": "AZURA FATIMAH HOIRI", "kelas": "1C", "tilawati": "", "id": "s66"}, {"no": 67, "nama": "DANITA VARRAH AZZAHRA", "kelas": "1C", "tilawati": "", "id": "s67"}, {"no": 68, "nama": "ELVANO ALISYAHBANA PUTRA", "kelas": "1C", "tilawati": "", "id": "s68"}, {"no": 69, "nama": "HAFIZHA SHAHIA PRADANA", "kelas": "1C", "tilawati": "", "id": "s69"}, {"no": 70, "nama": "HALIMAH", "kelas": "1C", "tilawati": "", "id": "s70"}, {"no": 71, "nama": "JANEETA JAUDAH BAGASKARA", "kelas": "1C", "tilawati": "", "id": "s71"}, {"no": 72, "nama": "JIHAN AIZA FIRDAUSI", "kelas": "1C", "tilawati": "", "id": "s72"}, {"no": 73, "nama": "KAYLA RAHMANIA PUTRI ZULKARNAEN", "kelas": "1C", "tilawati": "", "id": "s73"}, {"no": 74, "nama": "KHANZA AZAHRA LAVANYA", "kelas": "1C", "tilawati": "", "id": "s74"}, {"no": 75, "nama": "LAILA SYABILA RAMADHANI", "kelas": "1C", "tilawati": "", "id": "s75"}, {"no": 76, "nama": "LINTANG KIRANA ABINAYA", "kelas": "1C", "tilawati": "", "id": "s76"}, {"no": 77, "nama": "MAIA RAHMA OKTAVIAN", "kelas": "1C", "tilawati": "", "id": "s77"}, {"no": 78, "nama": "MUHAMMAD ABQARY ARSENIO PRATAMA", "kelas": "1C", "tilawati": "", "id": "s78"}, {"no": 79, "nama": "MUHAMMAD ABYAN AL-HAQ", "kelas": "1C", "tilawati": "", "id": "s79"}, {"no": 80, "nama": "MUHAMMAD ALBISNI MUTSAQQOF AZMI", "kelas": "1C", "tilawati": "", "id": "s80"}, {"no": 81, "nama": "MUHAMMAD GIBRAN ARDAN SYAHREZA", "kelas": "1C", "tilawati": "", "id": "s81"}, {"no": 82, "nama": "NADHIFA MAULIDIA AZZAHRA", "kelas": "1C", "tilawati": "", "id": "s82"}, {"no": 83, "nama": "PUTIH KAHIYANG PUJI", "kelas": "1C", "tilawati": "", "id": "s83"}, {"no": 84, "nama": "SAFAIRA WAHYUAINI", "kelas": "1C", "tilawati": "", "id": "s84"}, {"no": 85, "nama": "SAKANA BAJHRA SHALMA", "kelas": "1C", "tilawati": "", "id": "s85"}, {"no": 86, "nama": "SITI ANISSA RAHMAH", "kelas": "1C", "tilawati": "", "id": "s86"}, {"no": 87, "nama": "SITI NAJWA ULFATUNNISA", "kelas": "1C", "tilawati": "", "id": "s87"}, {"no": 88, "nama": "ABIZAR AL GHIFARI AKBAR EL HASBY", "kelas": "2A", "tilawati": "", "id": "s88"}, {"no": 89, "nama": "ADIVA DANIA IMRITHI", "kelas": "2A", "tilawati": "", "id": "s89"}, {"no": 90, "nama": "AGHNIYA KERISTIN HAKIM", "kelas": "2A", "tilawati": "", "id": "s90"}, {"no": 91, "nama": "AHMAD FARHAN UBAIDILLAH", "kelas": "2A", "tilawati": "", "id": "s91"}, {"no": 92, "nama": "AHMAD MAULANA YUSUF", "kelas": "2A", "tilawati": "", "id": "s92"}, {"no": 93, "nama": "AHZA DANISH PRADANA", "kelas": "2A", "tilawati": "", "id": "s93"}, {"no": 94, "nama": "AKMAL HAMZI SYAHMI ZULKARNAIN", "kelas": "2A", "tilawati": "", "id": "s94"}, {"no": 95, "nama": "ALIKA KEISHA ZAHRA", "kelas": "2A", "tilawati": "", "id": "s95"}, {"no": 96, "nama": "FIRAS NOAH ACHMAD", "kelas": "2A", "tilawati": "", "id": "s96"}, {"no": 97, "nama": "GYTHA SAFFALUNA KEINARRA", "kelas": "2A", "tilawati": "", "id": "s97"}, {"no": 98, "nama": "HAAZIQ ASSYAUQI RENANGGA", "kelas": "2A", "tilawati": "", "id": "s98"}, {"no": 99, "nama": "HAFIZ ALI KAHFI", "kelas": "2A", "tilawati": "", "id": "s99"}, {"no": 100, "nama": "HANNANIA ANANTAVIRYA PRAWIRA", "kelas": "2A", "tilawati": "", "id": "s100"}, {"no": 101, "nama": "ILHAMI ALZAM MUTTAQY AHMAD", "kelas": "2A", "tilawati": "", "id": "s101"}, {"no": 102, "nama": "INARA ZOYA SHASMIRA ROHMAN", "kelas": "2A", "tilawati": "", "id": "s102"}, {"no": 103, "nama": "KALILA ATHAYA RADISTY", "kelas": "2A", "tilawati": "", "id": "s103"}, {"no": 104, "nama": "KENATHAN FITRAH BRIANJANI", "kelas": "2A", "tilawati": "", "id": "s104"}, {"no": 105, "nama": "MEDINA SHANUM ALFARIZI", "kelas": "2A", "tilawati": "", "id": "s105"}, {"no": 106, "nama": "MOHAMMAD KAYYIS NURDIANSYAH", "kelas": "2A", "tilawati": "", "id": "s106"}, {"no": 107, "nama": "MUHAMMAD HABEEL RAZAN AR RUMI", "kelas": "2A", "tilawati": "", "id": "s107"}, {"no": 108, "nama": "MUHAMMAD ZHAFRAN HAIKAL GHAFI", "kelas": "2A", "tilawati": "", "id": "s108"}, {"no": 109, "nama": "NADHIRAH QHOMROO SHAFWAN ZULFA", "kelas": "2A", "tilawati": "", "id": "s109"}, {"no": 110, "nama": "QIARA SITI ARSYLA KHANZA", "kelas": "2A", "tilawati": "", "id": "s110"}, {"no": 111, "nama": "RAFI IKHSAN ADRIANSYAH", "kelas": "2A", "tilawati": "", "id": "s111"}, {"no": 112, "nama": "RANIA KHANZA ALMAHYRA", "kelas": "2A", "tilawati": "", "id": "s112"}, {"no": 113, "nama": "RHEVITA SERELIA ROKHMAH", "kelas": "2A", "tilawati": "", "id": "s113"}, {"no": 114, "nama": "ZAFRAN BARNAS SAPUTRA", "kelas": "2A", "tilawati": "", "id": "s114"}, {"no": 115, "nama": "ZIVANA AZZAHRA ALHASIM", "kelas": "2A", "tilawati": "", "id": "s115"}, {"no": 116, "nama": "ALFATHAN JUNIAR RAMADHAN", "kelas": "2B", "tilawati": "", "id": "s116"}, {"no": 117, "nama": "ALIFA NUR AZIZAH", "kelas": "2B", "tilawati": "", "id": "s117"}, {"no": 118, "nama": "ALILA ALEYKA AZZAHRA", "kelas": "2B", "tilawati": "", "id": "s118"}, {"no": 119, "nama": "ALMAHYRA BINAR AIRA", "kelas": "2B", "tilawati": "", "id": "s119"}, {"no": 120, "nama": "ALRAFAEYZA ARSHAKA PUTRAHITA", "kelas": "2B", "tilawati": "", "id": "s120"}, {"no": 121, "nama": "ANLIO MEICO DHEVANO", "kelas": "2B", "tilawati": "", "id": "s121"}, {"no": 122, "nama": "ARIMBI ZAMEENA ALESHAQUEEN", "kelas": "2B", "tilawati": "", "id": "s122"}, {"no": 123, "nama": "ARSYAD NUR ROHMAN SYAHIR", "kelas": "2B", "tilawati": "", "id": "s123"}, {"no": 124, "nama": "ARUNDATI RAIQA ARIFINPUTRI", "kelas": "2B", "tilawati": "", "id": "s124"}, {"no": 125, "nama": "FALIH ATHAR MUHARROR", "kelas": "2B", "tilawati": "", "id": "s125"}, {"no": 126, "nama": "ISHAAN RAHARDIAN AL QODRI", "kelas": "2B", "tilawati": "", "id": "s126"}, {"no": 127, "nama": "ISKANDAR SUTAWIJAYA KHOIRON", "kelas": "2B", "tilawati": "", "id": "s127"}, {"no": 128, "nama": "KEINARRA WEBISON", "kelas": "2B", "tilawati": "", "id": "s128"}, {"no": 129, "nama": "KYARA DELISHA AFRIN", "kelas": "2B", "tilawati": "", "id": "s129"}, {"no": 130, "nama": "MUHAMMAD FATHAR ABDILLAH PAMUJI", "kelas": "2B", "tilawati": "", "id": "s130"}, {"no": 131, "nama": "MUHAMMAD NADHIF AL FAYYAD AZMI", "kelas": "2B", "tilawati": "", "id": "s131"}, {"no": 132, "nama": "MUHAMMAD RIZAL UWAIS ATHOILLAH", "kelas": "2B", "tilawati": "", "id": "s132"}, {"no": 133, "nama": "MUHAMMAD XAVI ALFAHREZA", "kelas": "2B", "tilawati": "", "id": "s133"}, {"no": 134, "nama": "MUHAMMAD ZAWILUS SYARIF", "kelas": "2B", "tilawati": "", "id": "s134"}, {"no": 135, "nama": "MUMTAAZ JIHAN POERNAMA", "kelas": "2B", "tilawati": "", "id": "s135"}, {"no": 136, "nama": "NADIRA SURYA HANUM AZ ZAHRA", "kelas": "2B", "tilawati": "", "id": "s136"}, {"no": 137, "nama": "NAURA ANINDYA SANTOSO", "kelas": "2B", "tilawati": "", "id": "s137"}, {"no": 138, "nama": "NAYYARA ARFADHIA YASID", "kelas": "2B", "tilawati": "", "id": "s138"}, {"no": 139, "nama": "NISRINA EKA AL MILKAH", "kelas": "2B", "tilawati": "", "id": "s139"}, {"no": 140, "nama": "NOUREEN MIKAYLA", "kelas": "2B", "tilawati": "", "id": "s140"}, {"no": 141, "nama": "NUSAIBAH MUARRIKHAH AL'ABQARIYYAH", "kelas": "2B", "tilawati": "", "id": "s141"}, {"no": 142, "nama": "OCEAN HERLYANTIN VASTY AQILLAH", "kelas": "2B", "tilawati": "", "id": "s142"}, {"no": 143, "nama": "RAFFASYA GIBRAN TRIYANTA", "kelas": "2B", "tilawati": "", "id": "s143"}, {"no": 144, "nama": "RAFFASYA MAULANA AKBAR", "kelas": "2B", "tilawati": "", "id": "s144"}, {"no": 145, "nama": "ARRAYYAN DANU PUTRA HIDAYAT", "kelas": "2C", "tilawati": "", "id": "s145"}, {"no": 146, "nama": "ARUNA DIPTA", "kelas": "2C", "tilawati": "", "id": "s146"}, {"no": 147, "nama": "ARVINO ALUCIO PRIATAMA", "kelas": "2C", "tilawati": "", "id": "s147"}, {"no": 148, "nama": "ASADULLAH MAULANA AKBAR", "kelas": "2C", "tilawati": "", "id": "s148"}, {"no": 149, "nama": "ASTUNGKARA SIFANA", "kelas": "2C", "tilawati": "", "id": "s149"}, {"no": 150, "nama": "ASYIFA HILYA AZZAHRA", "kelas": "2C", "tilawati": "", "id": "s150"}, {"no": 151, "nama": "AZFIR KHALIF PUTRA SYAHBANA", "kelas": "2C", "tilawati": "", "id": "s151"}, {"no": 152, "nama": "AZRIL RAYHAN ALFARISQI", "kelas": "2C", "tilawati": "", "id": "s152"}, {"no": 153, "nama": "CANTIKA ARZETTI GUTOMO", "kelas": "2C", "tilawati": "", "id": "s153"}, {"no": 154, "nama": "DAVKA RAIS WISHAKA", "kelas": "2C", "tilawati": "", "id": "s154"}, {"no": 155, "nama": "DZAKI FACHRIL HISYAM", "kelas": "2C", "tilawati": "", "id": "s155"}, {"no": 156, "nama": "FAKHRY ALSYAZANI ALTHARAFISQI WIDJAYA", "kelas": "2C", "tilawati": "", "id": "s156"}, {"no": 157, "nama": "HAIDAR SYAFI ARDIAZ ROZLY", "kelas": "2C", "tilawati": "", "id": "s157"}, {"no": 158, "nama": "MALIKA AINUR RAHMAH", "kelas": "2C", "tilawati": "", "id": "s158"}, {"no": 159, "nama": "MIKAILA ZAHRA SULLIVAN", "kelas": "2C", "tilawati": "", "id": "s159"}, {"no": 160, "nama": "MUHAMMAD AQMAR RAFIF", "kelas": "2C", "tilawati": "", "id": "s160"}, {"no": 161, "nama": "MUHAMMAD ARRAYAN YUNUS KURNIAWAN", "kelas": "2C", "tilawati": "", "id": "s161"}, {"no": 162, "nama": "MUHAMMAD IBNU KAMIL FRANDIKA HADI", "kelas": "2C", "tilawati": "", "id": "s162"}, {"no": 163, "nama": "MUHAMMAD IBRAHIM AL FATIH", "kelas": "2C", "tilawati": "", "id": "s163"}, {"no": 164, "nama": "MUHAMMAD IRSYAD ALFAIZY", "kelas": "2C", "tilawati": "", "id": "s164"}, {"no": 165, "nama": "MUHAMMAD ISFY HANANI", "kelas": "2C", "tilawati": "", "id": "s165"}, {"no": 166, "nama": "MUHAMMAD MAHIRA DZIKRA", "kelas": "2C", "tilawati": "", "id": "s166"}, {"no": 167, "nama": "NAURA KALILA FASA", "kelas": "2C", "tilawati": "", "id": "s167"}, {"no": 168, "nama": "RAISYA AZKA ALMASHYRA", "kelas": "2C", "tilawati": "", "id": "s168"}, {"no": 169, "nama": "RAYYAN FAZA ATAROCHMAN", "kelas": "2C", "tilawati": "", "id": "s169"}, {"no": 170, "nama": "REVANDA AYLA SANTANA", "kelas": "2C", "tilawati": "", "id": "s170"}, {"no": 171, "nama": "ZAHWA NUR ADZKIA RAMADHANI", "kelas": "2C", "tilawati": "", "id": "s171"}, {"no": 172, "nama": "ZAKYANDRA SARFARAZ YUSUF", "kelas": "2C", "tilawati": "", "id": "s172"}, {"no": 173, "nama": "ZHAFIRA AZKADINA RAMADHANI", "kelas": "2C", "tilawati": "", "id": "s173"}, {"no": 174, "nama": "ABIMANYU PUTRA PRATAMA KURNIAWAN", "kelas": "3A", "tilawati": "", "id": "s174"}, {"no": 175, "nama": "ABIZAR ARFAN RAQQILA", "kelas": "3A", "tilawati": "", "id": "s175"}, {"no": 176, "nama": "ACHMAD GILANG HAFIZH HARIRI", "kelas": "3A", "tilawati": "", "id": "s176"}, {"no": 177, "nama": "AFIQA AZKADINA AHMAD", "kelas": "3A", "tilawati": "", "id": "s177"}, {"no": 178, "nama": "AFIZA AZKAYRA SYAFA", "kelas": "3A", "tilawati": "", "id": "s178"}, {"no": 179, "nama": "AHMAD FAHIM SYABILARROSYAD", "kelas": "3A", "tilawati": "", "id": "s179"}, {"no": 180, "nama": "ALMAIRA SALSABILA AZMI", "kelas": "3A", "tilawati": "", "id": "s180"}, {"no": 181, "nama": "ALULA BARRAH GAZALA DZAHIN", "kelas": "3A", "tilawati": "", "id": "s181"}, {"no": 182, "nama": "ARETHA KINARA AZKADINA", "kelas": "3A", "tilawati": "", "id": "s182"}, {"no": 183, "nama": "AZKADINA KIREY SHAHIRA ARZY", "kelas": "3A", "tilawati": "", "id": "s183"}, {"no": 184, "nama": "AZKA RHAFASYA PUTRA EFRILIAN", "kelas": "3A", "tilawati": "", "id": "s184"}, {"no": 185, "nama": "DANIAL FAZEL ZADEH", "kelas": "3A", "tilawati": "", "id": "s185"}, {"no": 186, "nama": "ESHAN RAYYAN ALTAIR AKBAR", "kelas": "3A", "tilawati": "", "id": "s186"}, {"no": 187, "nama": "FARIZA RUFAYDA YUSUFA", "kelas": "3A", "tilawati": "", "id": "s187"}, {"no": 188, "nama": "FASYABINA QAIREEN AZZALEA", "kelas": "3A", "tilawati": "", "id": "s188"}, {"no": 189, "nama": "FATIMAH UMAR MUTOHAR", "kelas": "3A", "tilawati": "", "id": "s189"}, {"no": 190, "nama": "GADHING KARTA ADIWANGSA", "kelas": "3A", "tilawati": "", "id": "s190"}, {"no": 191, "nama": "HAMZAH GHAFIR ABDILLAH", "kelas": "3A", "tilawati": "", "id": "s191"}, {"no": 192, "nama": "IBRAHIM AL FATH", "kelas": "3A", "tilawati": "", "id": "s192"}, {"no": 193, "nama": "KAIVAN ARKANANTA", "kelas": "3A", "tilawati": "", "id": "s193"}, {"no": 194, "nama": "MANGGALA PRIATAMA TSAQIB", "kelas": "3A", "tilawati": "", "id": "s194"}, {"no": 195, "nama": "MAZIYAH NAJLA QONITA", "kelas": "3A", "tilawati": "", "id": "s195"}, {"no": 196, "nama": "MUHAMMAD AUFA AL-FATIH", "kelas": "3A", "tilawati": "", "id": "s196"}, {"no": 197, "nama": "NADHIF NAWAF SYARIF", "kelas": "3A", "tilawati": "", "id": "s197"}, {"no": 198, "nama": "NAVISHA PUTRI KUSUMA NURFALAH", "kelas": "3A", "tilawati": "", "id": "s198"}, {"no": 199, "nama": "QORRYNA AISYIYAH FITRI AZ - ZAHRA", "kelas": "3A", "tilawati": "", "id": "s199"}, {"no": 200, "nama": "QUEENASYA AZZAHRA HANA DARMAWAN", "kelas": "3A", "tilawati": "", "id": "s200"}, {"no": 201, "nama": "SALSABILA NADHIFA RAHMAN", "kelas": "3A", "tilawati": "", "id": "s201"}, {"no": 202, "nama": "YASMIN HUMAIRAH UBAIDAH HASAN", "kelas": "3A", "tilawati": "", "id": "s202"}, {"no": 203, "nama": "ABIZAR FAHMI PRIYANTO", "kelas": "3B", "tilawati": "", "id": "s203"}, {"no": 204, "nama": "ACHMAT REVANO SANJAYA PUTRA", "kelas": "3B", "tilawati": "", "id": "s204"}, {"no": 205, "nama": "AHMAD ALGIS NUGIEAZKA HIDAYAT", "kelas": "3B", "tilawati": "", "id": "s205"}, {"no": 206, "nama": "AHMAD FAKHRI ZAHRAN RABBANI", "kelas": "3B", "tilawati": "", "id": "s206"}, {"no": 207, "nama": "AHZA NAWAF NARENDRA", "kelas": "3B", "tilawati": "", "id": "s207"}, {"no": 208, "nama": "AL FATIH AZAYDAN", "kelas": "3B", "tilawati": "", "id": "s208"}, {"no": 209, "nama": "ANDROMEDA ZAAFARANI", "kelas": "3B", "tilawati": "", "id": "s209"}, {"no": 210, "nama": "ARKHANDRA ZAIDAN ALTHAF", "kelas": "3B", "tilawati": "", "id": "s210"}, {"no": 211, "nama": "ARSAKHA AHMAD VIRENDRA", "kelas": "3B", "tilawati": "", "id": "s211"}, {"no": 212, "nama": "ATHALLAH RASYDAN RAMADHANI", "kelas": "3B", "tilawati": "", "id": "s212"}, {"no": 213, "nama": "AZZAM RAFISQI SYAHPUTRA", "kelas": "3B", "tilawati": "", "id": "s213"}, {"no": 214, "nama": "BINTA KHALILUNA ILMA", "kelas": "3B", "tilawati": "", "id": "s214"}, {"no": 215, "nama": "FATIN SHIDQIYATUL MASRUROH", "kelas": "3B", "tilawati": "", "id": "s215"}, {"no": 216, "nama": "GHAITSA AMANDA YUSKI", "kelas": "3B", "tilawati": "", "id": "s216"}, {"no": 217, "nama": "HANINDHIYA WAHYUAINI", "kelas": "3B", "tilawati": "", "id": "s217"}, {"no": 218, "nama": "KEYRA LETICIA SHANUM", "kelas": "3B", "tilawati": "", "id": "s218"}, {"no": 219, "nama": "MUHAMMAD DZAKI IBRAHIM R", "kelas": "3B", "tilawati": "", "id": "s219"}, {"no": 220, "nama": "MUHAMMAD IDRIS NAWAWI", "kelas": "3B", "tilawati": "", "id": "s220"}, {"no": 221, "nama": "MUHAMMAD RADIKA ADIYATMA HIMAWAN", "kelas": "3B", "tilawati": "", "id": "s221"}, {"no": 222, "nama": "MUHAMMAD SAJJAD KAFIYAN ALI", "kelas": "3B", "tilawati": "", "id": "s222"}, {"no": 223, "nama": "MUHAMMAD ZYDAN TSAQIB AL RASYID F", "kelas": "3B", "tilawati": "", "id": "s223"}, {"no": 224, "nama": "NAFISHA ELIYA ZANNUBA", "kelas": "3B", "tilawati": "", "id": "s224"}, {"no": 225, "nama": "PRABU ABBIYAN NARENDRA", "kelas": "3B", "tilawati": "", "id": "s225"}, {"no": 226, "nama": "SHOLEH FATIH AL ZHAFRAN", "kelas": "3B", "tilawati": "", "id": "s226"}, {"no": 227, "nama": "TSAMARA NADHIFA UFAIRAH AZKA", "kelas": "3B", "tilawati": "", "id": "s227"}, {"no": 228, "nama": "ZAHWA HUMAIRA AL QODRI", "kelas": "3B", "tilawati": "", "id": "s228"}, {"no": 229, "nama": "ZEA SHAQUEENA HAKIM", "kelas": "3B", "tilawati": "", "id": "s229"}, {"no": 230, "nama": "AISYAH PUTRI PRAYITNO", "kelas": "3C", "tilawati": "", "id": "s230"}, {"no": 231, "nama": "ALMIRA ADILA ZULFATUZZAKIYAH", "kelas": "3C", "tilawati": "", "id": "s231"}, {"no": 232, "nama": "AMMAR SYAZANI", "kelas": "3C", "tilawati": "", "id": "s232"}, {"no": 233, "nama": "ANANDA ARJUNA NOVRIANSAH", "kelas": "3C", "tilawati": "", "id": "s233"}, {"no": 234, "nama": "ANANDITA HAWA AYUNINA ANGGORO", "kelas": "3C", "tilawati": "", "id": "s234"}, {"no": 235, "nama": "ARSYLA ZOYA SHAQUEENA", "kelas": "3C", "tilawati": "", "id": "s235"}, {"no": 236, "nama": "ERFIO ZAIYAN SALADIN AZFAR", "kelas": "3C", "tilawati": "", "id": "s236"}, {"no": 237, "nama": "FITRI AYSKAA NUR FATIHAH TARMIDI", "kelas": "3C", "tilawati": "", "id": "s237"}, {"no": 238, "nama": "GHANIA AZKADINA", "kelas": "3C", "tilawati": "", "id": "s238"}, {"no": 239, "nama": "HAFSHAH AULIA NISA", "kelas": "3C", "tilawati": "", "id": "s239"}, {"no": 240, "nama": "HUWAIDA RAHMA KHAIRUNNISA", "kelas": "3C", "tilawati": "", "id": "s240"}, {"no": 241, "nama": "LUBNA HUMAIRA AZ ZAHRA", "kelas": "3C", "tilawati": "", "id": "s241"}, {"no": 242, "nama": "MEISYA ARTALITA WINARNO", "kelas": "3C", "tilawati": "", "id": "s242"}, {"no": 243, "nama": "MOCH. ABRAR ASMUNI", "kelas": "3C", "tilawati": "", "id": "s243"}, {"no": 244, "nama": "MOCHAMMAD NOUVAL AD'HA PRATAMA", "kelas": "3C", "tilawati": "", "id": "s244"}, {"no": 245, "nama": "MUHAMMAD AZKA RAFFASYA ARIFIN", "kelas": "3C", "tilawati": "", "id": "s245"}, {"no": 246, "nama": "MUHAMMAD RAFKA", "kelas": "3C", "tilawati": "", "id": "s246"}, {"no": 247, "nama": "MUHAMMAD TAMAM NI’AMILLAH", "kelas": "3C", "tilawati": "", "id": "s247"}, {"no": 248, "nama": "NAURA RAMADHANI ANSANI", "kelas": "3C", "tilawati": "", "id": "s248"}, {"no": 249, "nama": "NURUL ALISHA PRADANA", "kelas": "3C", "tilawati": "", "id": "s249"}, {"no": 250, "nama": "PRATAMA SULAIMAN WARDHANA", "kelas": "3C", "tilawati": "", "id": "s250"}, {"no": 251, "nama": "RAESAKA PUTRO MANGKULUHUR", "kelas": "3C", "tilawati": "", "id": "s251"}, {"no": 252, "nama": "RUMAISHA JIHAN SYAFANA", "kelas": "3C", "tilawati": "", "id": "s252"}, {"no": 253, "nama": "SABIYA ARDEVA SHANUM", "kelas": "3C", "tilawati": "", "id": "s253"}, {"no": 254, "nama": "SAKALA TIERTTA NABYRU", "kelas": "3C", "tilawati": "", "id": "s254"}, {"no": 255, "nama": "SKY ABNER XAVIER", "kelas": "3C", "tilawati": "", "id": "s255"}, {"no": 256, "nama": "AHMAD ABDULLAH FAHZI", "kelas": "4A", "tilawati": "", "id": "s256"}, {"no": 257, "nama": "AHNAF HABIBI PUTRA IWANNANDA", "kelas": "4A", "tilawati": "", "id": "s257"}, {"no": 258, "nama": "AILLEN NETHANIA AZ ZAHRA", "kelas": "4A", "tilawati": "", "id": "s258"}, {"no": 259, "nama": "AISYAH KHOIRUNNISA", "kelas": "4A", "tilawati": "", "id": "s259"}, {"no": 260, "nama": "ALECIA AUGUST MAHESWARI", "kelas": "4A", "tilawati": "", "id": "s260"}, {"no": 261, "nama": "ALVREDO MOISSANI MANGGALA", "kelas": "4A", "tilawati": "", "id": "s261"}, {"no": 262, "nama": "AQILA QAIREEN AL NAJLA", "kelas": "4A", "tilawati": "", "id": "s262"}, {"no": 263, "nama": "ARHABURRIZQI SYAUQILLAH", "kelas": "4A", "tilawati": "", "id": "s263"}, {"no": 264, "nama": "AS-SHIDDIQUL AMIEN", "kelas": "4A", "tilawati": "", "id": "s264"}, {"no": 265, "nama": "CHAYRA RAHMA ANJANI", "kelas": "4A", "tilawati": "", "id": "s265"}, {"no": 266, "nama": "DETIAN RAMADHANI", "kelas": "4A", "tilawati": "", "id": "s266"}, {"no": 267, "nama": "FADLI AFFAN MAULANA ZEIDAN", "kelas": "4A", "tilawati": "", "id": "s267"}, {"no": 268, "nama": "FATIMAH NUR MAULIDIYAH", "kelas": "4A", "tilawati": "", "id": "s268"}, {"no": 269, "nama": "JIHAN ALFARIZQIA SHAQUEENA ABDILLAH", "kelas": "4A", "tilawati": "", "id": "s269"}, {"no": 270, "nama": "KHEIRA MAHARANI KRISTANTO", "kelas": "4A", "tilawati": "", "id": "s270"}, {"no": 271, "nama": "MARWA", "kelas": "4A", "tilawati": "", "id": "s271"}, {"no": 272, "nama": "MOHAMMAD ADIB ELKAFI", "kelas": "4A", "tilawati": "", "id": "s272"}, {"no": 273, "nama": "MOHAMMAD ATHARIZ ARSY ADYATMA F", "kelas": "4A", "tilawati": "", "id": "s273"}, {"no": 274, "nama": "MUHAMMAD AINUN NAJIB YUSENO", "kelas": "4A", "tilawati": "", "id": "s274"}, {"no": 275, "nama": "NAIL ALFALAH SATRIA WIBOWO", "kelas": "4A", "tilawati": "", "id": "s275"}, {"no": 276, "nama": "NATHANIA ALIFA ZAHRANI", "kelas": "4A", "tilawati": "", "id": "s276"}, {"no": 277, "nama": "NAURA SALSABILA PUTRI WICAKSONO", "kelas": "4A", "tilawati": "", "id": "s277"}, {"no": 278, "nama": "NURFATTAH CAESAR AKBAR", "kelas": "4A", "tilawati": "", "id": "s278"}, {"no": 279, "nama": "RANASYA SYAHLA FAWNIA", "kelas": "4A", "tilawati": "", "id": "s279"}, {"no": 280, "nama": "RATNA AYU PRAMESTI", "kelas": "4A", "tilawati": "", "id": "s280"}, {"no": 281, "nama": "SHAQUINA NAFISHA ULINNUHA", "kelas": "4A", "tilawati": "", "id": "s281"}, {"no": 282, "nama": "SHEZAN AQEELA ALMIRA WIDYANTONO", "kelas": "4A", "tilawati": "", "id": "s282"}, {"no": 283, "nama": "VIGO FERNANDO ANDREAS SAPUTRA", "kelas": "4A", "tilawati": "", "id": "s283"}, {"no": 284, "nama": "ZAINUL ABROR", "kelas": "4A", "tilawati": "", "id": "s284"}, {"no": 285, "nama": "AHMAD GIBRAN KHALFANI SETIYONO", "kelas": "4B", "tilawati": "", "id": "s285"}, {"no": 286, "nama": "AINAYYA DEIRA AVA CARISSA", "kelas": "4B", "tilawati": "", "id": "s286"}, {"no": 287, "nama": "ALMEERA SAQUEENA MAKAILAH RAHMAN", "kelas": "4B", "tilawati": "", "id": "s287"}, {"no": 288, "nama": "ALVIN AZZAM AMINULLAH", "kelas": "4B", "tilawati": "", "id": "s288"}, {"no": 289, "nama": "ALYA MYESHA ORLIN FAREDY", "kelas": "4B", "tilawati": "", "id": "s289"}, {"no": 290, "nama": "ANANDA PUTRA ANIFA UBAYDILAH", "kelas": "4B", "tilawati": "", "id": "s290"}, {"no": 291, "nama": "ANNISA SYIFA ALINARROHMAN", "kelas": "4B", "tilawati": "", "id": "s291"}, {"no": 292, "nama": "ARIF MUBAROK", "kelas": "4B", "tilawati": "", "id": "s292"}, {"no": 293, "nama": "ARSYLA SHANUM STINEE", "kelas": "4B", "tilawati": "", "id": "s293"}, {"no": 294, "nama": "ATHAYA ALRESCHA SHAQUILE AGRI", "kelas": "4B", "tilawati": "", "id": "s294"}, {"no": 295, "nama": "AZKA IZZUL ARDIAZ ROZLY", "kelas": "4B", "tilawati": "", "id": "s295"}, {"no": 296, "nama": "FATIMAH NAJWA", "kelas": "4B", "tilawati": "", "id": "s296"}, {"no": 297, "nama": "KEISYA PUTRI RIEFA ZAHRA", "kelas": "4B", "tilawati": "", "id": "s297"}, {"no": 298, "nama": "KHENZO MOHAMAD AHZA AL-ABQARI", "kelas": "4B", "tilawati": "", "id": "s298"}, {"no": 299, "nama": "KHOIRUNNISA LATHIF", "kelas": "4B", "tilawati": "", "id": "s299"}, {"no": 300, "nama": "LINTANG AULIA ZAHIRA", "kelas": "4B", "tilawati": "", "id": "s300"}, {"no": 301, "nama": "MUHAMMAD AMMAR YASIR", "kelas": "4B", "tilawati": "", "id": "s301"}, {"no": 302, "nama": "MUHAMMAD AUFAR RADITYA", "kelas": "4B", "tilawati": "", "id": "s302"}, {"no": 303, "nama": "MUHAMMAD AZKA MAULANA", "kelas": "4B", "tilawati": "", "id": "s303"}, {"no": 304, "nama": "MUHAMMAD AZKA RIQI PRATAMA", "kelas": "4B", "tilawati": "", "id": "s304"}, {"no": 305, "nama": "MUHAMMAD GILANG RAMADHAN", "kelas": "4B", "tilawati": "", "id": "s305"}, {"no": 306, "nama": "MUHAMMAD KENZIE FAIZ HAMIZAN", "kelas": "4B", "tilawati": "", "id": "s306"}, {"no": 307, "nama": "NADHIFA AYU QANITA", "kelas": "4B", "tilawati": "", "id": "s307"}, {"no": 308, "nama": "NAHDA KHAIRA PUTRI", "kelas": "4B", "tilawati": "", "id": "s308"}, {"no": 309, "nama": "NATHAN SYAUQI ATHARAZKA", "kelas": "4B", "tilawati": "", "id": "s309"}, {"no": 310, "nama": "NIZAM AHMAD FAISHOL FAWAIDI", "kelas": "4B", "tilawati": "", "id": "s310"}, {"no": 311, "nama": "PRICILIA SHERENA KESYA", "kelas": "4B", "tilawati": "", "id": "s311"}, {"no": 312, "nama": "SESAYU PADMA KINASIH", "kelas": "4B", "tilawati": "", "id": "s312"}, {"no": 313, "nama": "SHEZA AQILA MOERTIYANTO", "kelas": "4B", "tilawati": "", "id": "s313"}, {"no": 314, "nama": "AHMAD ALKHALIFI IBNU AZMI", "kelas": "5A", "tilawati": "", "id": "s314"}, {"no": 315, "nama": "AISYAH AZZAHRA BAIDOWI", "kelas": "5A", "tilawati": "", "id": "s315"}, {"no": 316, "nama": "ALYA NAMIRA SETIAWAN", "kelas": "5A", "tilawati": "", "id": "s316"}, {"no": 317, "nama": "ARJU ANTAKUNA ULIL ALBAB", "kelas": "5A", "tilawati": "", "id": "s317"}, {"no": 318, "nama": "AYUDIA INARA ZAHRA", "kelas": "5A", "tilawati": "", "id": "s318"}, {"no": 319, "nama": "BILQIS AIDA SALSABILA", "kelas": "5A", "tilawati": "", "id": "s319"}, {"no": 320, "nama": "ERFILA ZAIRA ALIA AFSHEEN", "kelas": "5A", "tilawati": "", "id": "s320"}, {"no": 321, "nama": "FAIZ ADAM ARRIJALU", "kelas": "5A", "tilawati": "", "id": "s321"}, {"no": 322, "nama": "FAWWAZ ALBY HAMIZAN", "kelas": "5A", "tilawati": "", "id": "s322"}, {"no": 323, "nama": "IBNU IKHBAR ABQARI", "kelas": "5A", "tilawati": "", "id": "s323"}, {"no": 324, "nama": "JIBRIL GANENDRA ATHARIZZ WIYAGARA", "kelas": "5A", "tilawati": "", "id": "s324"}, {"no": 325, "nama": "MAHARANI RATIFA ARDHANI", "kelas": "5A", "tilawati": "", "id": "s325"}, {"no": 326, "nama": "MAULANI ZHAFIRA AZNI", "kelas": "5A", "tilawati": "", "id": "s326"}, {"no": 327, "nama": "MUHAMMAD AGHA PUTRA WIYONO", "kelas": "5A", "tilawati": "", "id": "s327"}, {"no": 328, "nama": "MUHAMMAD ARDIVO RAIHAN AKMAL", "kelas": "5A", "tilawati": "", "id": "s328"}, {"no": 329, "nama": "MUHAMMAD AZZAM FEBRIANSYAH", "kelas": "5A", "tilawati": "", "id": "s329"}, {"no": 330, "nama": "MUHAMMAD GIBRAN AL GHIFARY GOFTA", "kelas": "5A", "tilawati": "", "id": "s330"}, {"no": 331, "nama": "MUHAMMAD HAFIZH RHADIKA PUTRA", "kelas": "5A", "tilawati": "", "id": "s331"}, {"no": 332, "nama": "MUHAMMAD QURAISH AN-NAJIB", "kelas": "5A", "tilawati": "", "id": "s332"}, {"no": 333, "nama": "MUHAMMAD RASYAD AQIL IBNU ATHOILLAH", "kelas": "5A", "tilawati": "", "id": "s333"}, {"no": 334, "nama": "NADIYA RAHMEIDA", "kelas": "5A", "tilawati": "", "id": "s334"}, {"no": 335, "nama": "NASHIROH KHOIRUL INAYAH", "kelas": "5A", "tilawati": "", "id": "s335"}, {"no": 336, "nama": "SEKAR MANASIKANA LINTANG SANGA", "kelas": "5A", "tilawati": "", "id": "s336"}, {"no": 337, "nama": "SHEZA KHAYYIRAH IZZATY", "kelas": "5A", "tilawati": "", "id": "s337"}, {"no": 338, "nama": "AIDA AZKA TAQIYA", "kelas": "5B", "tilawati": "", "id": "s338"}, {"no": 339, "nama": "AISYAH BARRAH MILL FATHULLAILI", "kelas": "5B", "tilawati": "", "id": "s339"}, {"no": 340, "nama": "AL KHALIFI SHOHIBUL ISLAM", "kelas": "5B", "tilawati": "", "id": "s340"}, {"no": 341, "nama": "AL KHANSA", "kelas": "5B", "tilawati": "", "id": "s341"}, {"no": 342, "nama": "AMIRA DWI AURA NUR AZIZAH", "kelas": "5B", "tilawati": "", "id": "s342"}, {"no": 343, "nama": "ANANTARA FADHLAN FERDIANSYAH", "kelas": "5B", "tilawati": "", "id": "s343"}, {"no": 344, "nama": "ARSENIO AMMAR ALKHALIFI", "kelas": "5B", "tilawati": "", "id": "s344"}, {"no": 345, "nama": "AZFAR RAHMAN PRADIPTA DEAN", "kelas": "5B", "tilawati": "", "id": "s345"}, {"no": 346, "nama": "AZZAHRA RICHELLE NATHANIA EL HASBY", "kelas": "5B", "tilawati": "", "id": "s346"}, {"no": 347, "nama": "BIMA PERMANA WINARDI", "kelas": "5B", "tilawati": "", "id": "s347"}, {"no": 348, "nama": "DAMAR ABIMANYU FIRMANSYAH", "kelas": "5B", "tilawati": "", "id": "s348"}, {"no": 349, "nama": "DEWI FATIMATUZ ZAHRO", "kelas": "5B", "tilawati": "", "id": "s349"}, {"no": 350, "nama": "FARELZA MAULANA AL- HABSYI", "kelas": "5B", "tilawati": "", "id": "s350"}, {"no": 351, "nama": "FRANDA SHAQUILA ILMANAFIA", "kelas": "5B", "tilawati": "", "id": "s351"}, {"no": 352, "nama": "GIBRAN ARKHAN EL MAXTIAR", "kelas": "5B", "tilawati": "", "id": "s352"}, {"no": 353, "nama": "GUSTI ELYSIA ARSYIFA SALSABILA DEWI", "kelas": "5B", "tilawati": "", "id": "s353"}, {"no": 354, "nama": "INARA KHALIQA SAKHI", "kelas": "5B", "tilawati": "", "id": "s354"}, {"no": 355, "nama": "MUHAMMAD AKMAL FIKRIYA", "kelas": "5B", "tilawati": "", "id": "s355"}, {"no": 356, "nama": "MUHAMMAD ASYRAF QAISHAR ALI", "kelas": "5B", "tilawati": "", "id": "s356"}, {"no": 357, "nama": "MUHAMMAD MAULANA HABIBULLAH", "kelas": "5B", "tilawati": "", "id": "s357"}, {"no": 358, "nama": "MUHAMMAD RAIHAN ALFATIH", "kelas": "5B", "tilawati": "", "id": "s358"}, {"no": 359, "nama": "MUHAMMAD ZAFRANA ALFATIH", "kelas": "5B", "tilawati": "", "id": "s359"}, {"no": 360, "nama": "NAURA ALESHA YULASTAMA", "kelas": "5B", "tilawati": "", "id": "s360"}, {"no": 361, "nama": "RAZKA ABBAD HAQQANI", "kelas": "5B", "tilawati": "", "id": "s361"}, {"no": 362, "nama": "YASMIN PUTRI AISYAH", "kelas": "5B", "tilawati": "", "id": "s362"}, {"no": 363, "nama": "ADILA NISA ARDANI", "kelas": "5C", "tilawati": "", "id": "s363"}, {"no": 364, "nama": "AINUN FARIHATUN NAZIYAH", "kelas": "5C", "tilawati": "", "id": "s364"}, {"no": 365, "nama": "ALVARO GIBRAN RAMADHAN", "kelas": "5C", "tilawati": "", "id": "s365"}, {"no": 366, "nama": "DHAFITHA NIZZA NUR AZIZAH", "kelas": "5C", "tilawati": "", "id": "s366"}, {"no": 367, "nama": "DIHYAH MUMTAZA AL-MUJTABA", "kelas": "5C", "tilawati": "", "id": "s367"}, {"no": 368, "nama": "FAIDZAN SAKHA FIRDAUS ARISANDI", "kelas": "5C", "tilawati": "", "id": "s368"}, {"no": 369, "nama": "FATIMAH NAJLA", "kelas": "5C", "tilawati": "", "id": "s369"}, {"no": 370, "nama": "JEFTA CAESAR HIDAYAT", "kelas": "5C", "tilawati": "", "id": "s370"}, {"no": 371, "nama": "LARIN YUMNA RAHMADANI", "kelas": "5C", "tilawati": "", "id": "s371"}, {"no": 372, "nama": "MARCELLO MAHATMA SYADDAD", "kelas": "5C", "tilawati": "", "id": "s372"}, {"no": 373, "nama": "MAULANI FARANNISA AZNI", "kelas": "5C", "tilawati": "", "id": "s373"}, {"no": 374, "nama": "MUHAMMAD RAFA AZKA HAFIZHAN", "kelas": "5C", "tilawati": "", "id": "s374"}, {"no": 375, "nama": "NABILA NUR AZIZA", "kelas": "5C", "tilawati": "", "id": "s375"}, {"no": 376, "nama": "NAGITA ADZKIA ANSANI", "kelas": "5C", "tilawati": "", "id": "s376"}, {"no": 377, "nama": "NAWRA AZZAHRA ZAINAL", "kelas": "5C", "tilawati": "", "id": "s377"}, {"no": 378, "nama": "RAZKA RADEVA ADIARTHA", "kelas": "5C", "tilawati": "", "id": "s378"}, {"no": 379, "nama": "SAYLA MEYA ZAMZAMEY", "kelas": "5C", "tilawati": "", "id": "s379"}, {"no": 380, "nama": "ZHAFRAN APRILIO PUTRA PRATAMA", "kelas": "5C", "tilawati": "", "id": "s380"}, {"no": 381, "nama": "ABDAN RAJA SYADID", "kelas": "6A", "tilawati": "", "id": "s381"}, {"no": 382, "nama": "ADLI AHMAD FAIRUZ", "kelas": "6A", "tilawati": "", "id": "s382"}, {"no": 383, "nama": "AFRIGHNI AHZA YASSAAR", "kelas": "6A", "tilawati": "", "id": "s383"}, {"no": 384, "nama": "AHMAD DZAKY PRADANA", "kelas": "6A", "tilawati": "", "id": "s384"}, {"no": 385, "nama": "ALFIDDIKRI RAMADHANI", "kelas": "6A", "tilawati": "", "id": "s385"}, {"no": 386, "nama": "ALKHALIFI NARENDRA AMARTA", "kelas": "6A", "tilawati": "", "id": "s386"}, {"no": 387, "nama": "ARYA PRATAMA MAHARDIKA", "kelas": "6A", "tilawati": "", "id": "s387"}, {"no": 388, "nama": "ARYA SATYA FATHIANSYAH", "kelas": "6A", "tilawati": "", "id": "s388"}, {"no": 389, "nama": "ARYA YUDHYSTHIRA DWI IRSANTO", "kelas": "6A", "tilawati": "", "id": "s389"}, {"no": 390, "nama": "ASSYIFA QINAN AZZAHRA", "kelas": "6A", "tilawati": "", "id": "s390"}, {"no": 391, "nama": "AURA OKTAVIANA PUTRI HARIRI", "kelas": "6A", "tilawati": "", "id": "s391"}, {"no": 392, "nama": "DANANG YULIYANTO", "kelas": "6A", "tilawati": "", "id": "s392"}, {"no": 393, "nama": "DENISA RIZALDI", "kelas": "6A", "tilawati": "", "id": "s393"}, {"no": 394, "nama": "DZAKIYYA TALITA SAKHI", "kelas": "6A", "tilawati": "", "id": "s394"}, {"no": 395, "nama": "EVELYN PUTRI ZORINA", "kelas": "6A", "tilawati": "", "id": "s395"}, {"no": 396, "nama": "KAISYHA KHANZA AZARINE GHANIA O. A.", "kelas": "6A", "tilawati": "", "id": "s396"}, {"no": 397, "nama": "MUHAMMAD ALBI HABIBILLAH", "kelas": "6A", "tilawati": "", "id": "s397"}, {"no": 398, "nama": "MUHAMMAD FIKRI ARYA WIRATAMA", "kelas": "6A", "tilawati": "", "id": "s398"}, {"no": 399, "nama": "MUHAMMAD UWAIS AL-QORNI", "kelas": "6A", "tilawati": "", "id": "s399"}, {"no": 400, "nama": "NAYSILLA SACHI KANAYA", "kelas": "6A", "tilawati": "", "id": "s400"}, {"no": 401, "nama": "NUR MUHAMMAD BILAL ARYA SATYAWAN", "kelas": "6A", "tilawati": "", "id": "s401"}, {"no": 402, "nama": "PRAJNAPARAMITA WAHYUAINI", "kelas": "6A", "tilawati": "", "id": "s402"}, {"no": 403, "nama": "RASYA AZHIM MUTHLIQ IBAD", "kelas": "6A", "tilawati": "", "id": "s403"}, {"no": 404, "nama": "REYSHA PEDRICO VERONICA FIRDAUS", "kelas": "6A", "tilawati": "", "id": "s404"}, {"no": 405, "nama": "RIZAL LUQMAN ZAHRAN", "kelas": "6A", "tilawati": "", "id": "s405"}, {"no": 406, "nama": "SHAFIRA AZ-ZAHRA", "kelas": "6A", "tilawati": "", "id": "s406"}, {"no": 407, "nama": "SHOKHWAH NAJMIL MUFIDAH", "kelas": "6A", "tilawati": "", "id": "s407"}, {"no": 408, "nama": "AGAM ABDILLAH PRATAMA BAKTI", "kelas": "6B", "tilawati": "", "id": "s408"}, {"no": 409, "nama": "AHMAD ADHYASTHA PRASAJA", "kelas": "6B", "tilawati": "", "id": "s409"}, {"no": 410, "nama": "ALKHALIFI AHZA RAYKAFANI ROHMAN", "kelas": "6B", "tilawati": "", "id": "s410"}, {"no": 411, "nama": "ALMIRA SAYYIDAH", "kelas": "6B", "tilawati": "", "id": "s411"}, {"no": 412, "nama": "AMMAR ATHA'ULLAH AL AZZAM", "kelas": "6B", "tilawati": "", "id": "s412"}, {"no": 413, "nama": "ANDHARA ANINDYA MASHURI", "kelas": "6B", "tilawati": "", "id": "s413"}, {"no": 414, "nama": "DAYU LOREN WIRYAMANTA", "kelas": "6B", "tilawati": "", "id": "s414"}, {"no": 415, "nama": "DIMAS BAGUS RAYHAN IBRAHIM HARTONO", "kelas": "6B", "tilawati": "", "id": "s415"}, {"no": 416, "nama": "FAHRI ZAFRAN KHAIRY AHMAD", "kelas": "6B", "tilawati": "", "id": "s416"}, {"no": 417, "nama": "FARAH NUR FITRIYAH", "kelas": "6B", "tilawati": "", "id": "s417"}, {"no": 418, "nama": "HASILATUL HILWATI", "kelas": "6B", "tilawati": "", "id": "s418"}, {"no": 419, "nama": "HUURUN'IIN ADZKIA RENANGGA", "kelas": "6B", "tilawati": "", "id": "s419"}, {"no": 420, "nama": "KINARA SYAQILA PUTRI RAMADHANI", "kelas": "6B", "tilawati": "", "id": "s420"}, {"no": 421, "nama": "MIRZA DWI MAULANA", "kelas": "6B", "tilawati": "", "id": "s421"}, {"no": 422, "nama": "MOHAMMAD ZAFRAN ABRIZAM HAKIM", "kelas": "6B", "tilawati": "", "id": "s422"}, {"no": 423, "nama": "MUHAMAD RAY KENZI HUNT", "kelas": "6B", "tilawati": "", "id": "s423"}, {"no": 424, "nama": "MUHAMMAD ARSYAD", "kelas": "6B", "tilawati": "", "id": "s424"}, {"no": 425, "nama": "MUHAMMAD DANI PRASETYO", "kelas": "6B", "tilawati": "", "id": "s425"}, {"no": 426, "nama": "MUHAMMAD RIZQI HAIKAL ALKHALIFI", "kelas": "6B", "tilawati": "", "id": "s426"}, {"no": 427, "nama": "MUHAMMAD SHERDAN AL- ABIYYU", "kelas": "6B", "tilawati": "", "id": "s427"}, {"no": 428, "nama": "NABILLA ELVINA KHAIRANI", "kelas": "6B", "tilawati": "", "id": "s428"}, {"no": 429, "nama": "NADIYA OKTAVIANA SYAHARI", "kelas": "6B", "tilawati": "", "id": "s429"}, {"no": 430, "nama": "NAYLA RAMADANI", "kelas": "6B", "tilawati": "", "id": "s430"}, {"no": 431, "nama": "NURUL SYIFA SAUQIYA", "kelas": "6B", "tilawati": "", "id": "s431"}, {"no": 432, "nama": "QUEEN BAHZA NAILAH SILMI", "kelas": "6B", "tilawati": "", "id": "s432"}, {"no": 433, "nama": "RAKA RAYYAN MAHADIKA", "kelas": "6B", "tilawati": "", "id": "s433"}, {"no": 434, "nama": "RASYA DWI BIMANTARA", "kelas": "6B", "tilawati": "", "id": "s434"}, {"no": 435, "nama": "TALITA AQILAH SAFITRI", "kelas": "6B", "tilawati": "", "id": "s435"}, {"no": 436, "nama": "VALEN ALZAIDAN RAMADHAN", "kelas": "6B", "tilawati": "", "id": "s436"}];
-const SEED_GURU = [{"nama": "SITI HAIRUNNISAK", "kode": "PT", "ruangan": "KONDISIONAL", "id": "g1"}, {"nama": "ROFIATUL HOYRIA", "kode": "GT2", "ruangan": "2A", "id": "g2"}, {"nama": "MUHAMMAD SOLIHIN", "kode": "GT5", "ruangan": "5A", "id": "g3"}, {"nama": "IANA ROSYIDATUL MUKARROMAH", "kode": "GT6", "ruangan": "AULA", "id": "g4"}, {"nama": "MUHAMMAD KHALILI", "kode": "GAQ", "ruangan": "6A", "id": "g5"}, {"nama": "OVI ADINIYAH ROCHMAH", "kode": "GT4", "ruangan": "4A", "id": "g6"}, {"nama": "INDAH SUCI UTAMI", "kode": "GT5", "ruangan": "5A", "id": "g7"}, {"nama": "SITI JUNITA", "kode": "PT", "ruangan": "KONDISIONAL", "id": "g8"}, {"nama": "ELMANIA ALAMSYAH", "kode": "GAQ", "ruangan": "6A", "id": "g9"}, {"nama": "ZAINAL ARIFIN", "kode": "GT6", "ruangan": "5C", "id": "g10"}, {"nama": "M. BAHRUDIN ROSYADI", "kode": "PT", "ruangan": "KONDISIONAL", "id": "g11"}, {"nama": "ELOK ROBIATUL ADAWIYAH", "kode": "GT4", "ruangan": "6B", "id": "g12"}, {"nama": "FIRDATUN HASIHAH", "kode": "GT3", "ruangan": "3C", "id": "g13"}, {"nama": "RIZQIAH HOLILIK", "kode": "GT3", "ruangan": "2C", "id": "g14"}, {"nama": "MUKHAMMAD KHARIM THOHARI", "kode": "GT3", "ruangan": "2C", "id": "g15"}, {"nama": "NABILA NUR INDAH RESTARI", "kode": "GT2", "ruangan": "2B", "id": "g16"}, {"nama": "INA'U ROHMATIR RIZKI", "kode": "GT1", "ruangan": "1B", "id": "g17"}, {"nama": "ISA BELLA MULIA WATI", "kode": "GT3", "ruangan": "2C", "id": "g18"}, {"nama": "NUR WAHID", "kode": "GT4", "ruangan": "4B", "id": "g19"}, {"nama": "FARHA LAILIYAH", "kode": "GI", "ruangan": "INKLUSI", "id": "g20"}, {"nama": "KHURIL MAULA", "kode": "GT1", "ruangan": "1C", "id": "g21"}, {"nama": "M. ZAINURROZIKIN", "kode": "PT", "ruangan": "KONDISIONAL", "id": "g22"}, {"nama": "DINA RIMADANI", "kode": "GT1", "ruangan": "1A", "id": "g23"}, {"nama": "FAIQOTUL HIMMAH", "kode": "PT", "ruangan": "KONDISIONAL", "id": "g24"}, {"nama": "FIKRIYAH HANIM", "kode": "GT1", "ruangan": "1A", "id": "g25"}, {"nama": "MUHAMMAD AINIL YAKIN", "kode": "GT3", "ruangan": "3B", "id": "g26"}, {"nama": "AGUNG PRASETIYO", "kode": "PT", "ruangan": "KONDISIONAL", "id": "g27"}, {"nama": "LIZA FATIMAH NUR DINI C", "kode": "GI", "ruangan": "INKLUSI", "id": "g28"}, {"nama": "FINNI WARDHATUL KHASBIYA", "kode": "GI", "ruangan": "INKLUSI", "id": "g29"}, {"nama": "SUCI ROMDANIYAH", "kode": "GT5", "ruangan": "5B", "id": "g30"}, {"nama": "REGINA ARININGTYAS", "kode": "GT3", "ruangan": "3B", "id": "g31"}, {"nama": "ANGEL ALAMSYAH", "kode": "GT3", "ruangan": "3A", "id": "g32"}, {"nama": "PUTRI NUR HALIZAH", "kode": "GT6", "ruangan": "5C", "id": "g33"}, {"nama": "AYU ENDANG PURWATI", "kode": "GT4", "ruangan": "4B", "id": "g34"}, {"nama": "WANDA SEPTIANA PRATIWI", "kode": "GI", "ruangan": "INKLUSI", "id": "g35"}, {"nama": "KHOLIFATUL HOIRO", "kode": "GI", "ruangan": "INKLUSI", "id": "g36"}, {"nama": "MILA RAHMATIKA", "kode": "GT1", "ruangan": "1C", "id": "g37"}, {"nama": "MAULA NABILA MAHRUS", "kode": "GAQ", "ruangan": "AULA", "id": "g38"}, {"nama": "RISKIA NANIN AULIA", "kode": "", "ruangan": "", "id": "g39"}, {"nama": "ANDY PURNOMO", "kode": "GT5", "ruangan": "5B", "id": "g40"}, {"nama": "MOHAMMAD ALI RIDHO", "kode": "GT6", "ruangan": "AULA", "id": "g41"}, {"nama": "RITA ANISATURRIZQI", "kode": "GT3", "ruangan": "2C", "id": "g42"}, {"nama": "ELIFATUL ZAZIL", "kode": "", "ruangan": "", "id": "g43"}, {"nama": "DAKHIROTUN NAFISAH", "kode": "", "ruangan": "", "id": "g44"}, {"nama": "PUTRI AYU WULANDARI", "kode": "GT2", "ruangan": "2B", "id": "g45"}, {"nama": "ASMAUL KHUSNAH", "kode": "", "ruangan": "", "id": "g46"}, {"nama": "NAIMAH ULINNUHA MUSALLAMAH", "kode": "", "ruangan": "", "id": "g47"}, {"nama": "IZZA BAHTIAR", "kode": "", "ruangan": "", "id": "g48"}, {"nama": "IZZA LUKLU'UL WAFIROH", "kode": "GT5", "ruangan": "5B", "id": "g49"}, {"nama": "MOCH SUBUR", "kode": "GT4", "ruangan": "4A", "id": "g50"}, {"nama": "NADA NABILA", "kode": "GT3", "ruangan": "3C", "id": "g51"}, {"nama": "MUAFIFAH", "kode": "GT1", "ruangan": "1B", "id": "g52"}];
+const SEED_SISWA = [];  // data awal tidak lagi ditanam di file ini (data hanya ada di Firebase)
+const SEED_GURU = [];
 
 </script>
 <script>
@@ -823,25 +802,9 @@ function isReadOnly(){
 }
 
 /* ======================= AUTH =======================
-   Login sekarang UTAMANYA lewat Firebase Authentication (Email/Password).
-   Role ('admin'/'penguji') dan nama disimpan di Firestore, collection
-   users/{uid} — BUKAN di JS ini lagi, supaya tidak kelihatan di source.
-
-   ACCOUNTS di bawah HANYA jaring pengaman sementara selama masa transisi,
-   sebelum akun Firebase Auth dibuat & dites. SETELAH migrasi selesai dan
-   sudah dites berhasil (lihat panduan di README-KEAMANAN):
-     1. Ganti LEGACY_LOGIN_ENABLED jadi false, ATAU
-     2. Ganti isi password di bawah dengan string acak yang tidak dipakai
-        di tempat lain (supaya walau bocor, tidak berguna).
-   Begitu Firestore Rules diperketat, login cara lama ini otomatis TIDAK
-   BISA lagi membaca/menulis data (rules mewajibkan login Firebase Auth
-   asli) — jadi baris ini jadi tidak berbahaya lagi setelah rules aktif,
-   tapi tetap sebaiknya dibersihkan supaya tidak membingungkan di kemudian hari. */
-const LEGACY_LOGIN_ENABLED = true; // <-- ganti ke false setelah migrasi Firebase Auth selesai & sudah dites
-const ACCOUNTS = [
-  {username:'Admin', password:'09876', role:'admin', label:'Admin'},
-  {username:'Penguji', password:'12345', role:'penguji', label:'Penguji Test'},
-];
+   Login HANYA lewat Firebase Authentication (email + password).
+   Peran ('admin'/'penguji') dan nama disimpan di Firestore, collection
+   users/{uid}; tidak ada akun atau password apa pun di dalam file ini. */
 
 /* ---- Rate limiting sederhana untuk percobaan login (anti brute-force kasar) ----
    Ini proteksi TAMBAHAN di sisi browser saja (bisa dilewati orang yang paham
@@ -994,7 +957,6 @@ function activeMateri(){ return isTahfidz() ? MATERI_TAHFIDZ : MATERI_TILAWATI; 
 function activeNextLevel(){ return isTahfidz() ? NEXT_LEVEL_TAHFIDZ : NEXT_LEVEL; }
 function activePenilaianStorageKeyPrefix(){ return isTahfidz() ? 'tahfidz-penilaian:' : 'penilaian:'; }
 function activePenilaianList(){ return isTahfidz() ? state.penilaianListTahfidz : state.penilaianList; }
-function activePenilaianStateKey(){ return isTahfidz() ? 'penilaianListTahfidz' : 'penilaianList'; }
 
 /* ======================= STORAGE HELPERS ======================= */
 // Pelacak kegagalan simpan: indikator TIDAK lagi bohong "Tersimpan" kalau server menolak/putus.
@@ -1171,14 +1133,6 @@ async function storageSet(key, value){
   }
   setSaving(false);
   return ok;
-}
-
-const saveTimers = {};
-function persist(key, value){
-  // debounce writes per-key so saving one list doesn't cancel another's pending save
-  clearTimeout(saveTimers[key]);
-  setSaving(true);
-  saveTimers[key] = setTimeout(()=>{ storageSet(key, value); }, 350);
 }
 
 async function storageList(prefix){
@@ -1876,21 +1830,6 @@ function getFilteredSiswa(){
   // kelas + abjad nama (dijaga oleh sortSiswaListInPlace di safeListUpdate &
   // loadAllData), jadi urutan ini otomatis konsisten di semua tempat.
   return list;
-}
-
-// Avatar bulat berisi inisial nama, warna konsisten per orang (bukan foto asli,
-// karena kita tidak punya foto siswa/guru).
-const AVATAR_COLORS = ['#FF7A5C','#7B4FE0','#1FA895','#E85D75','#2E6FF2','#D9950A','#5BAE3A'];
-function getInitials(name){
-  const parts = (name||'').trim().split(/\s+/);
-  if(!parts[0]) return '?';
-  return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
-}
-function getAvatarColor(name){
-  let hash = 0;
-  const s = name || '';
-  for(let i=0;i<s.length;i++){ hash = s.charCodeAt(i) + ((hash<<5)-hash); }
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 }
 
 function buildSiswaTableHtml(pageItems, allRooms, startIndex){
@@ -2903,12 +2842,12 @@ function printBlankoPenilaian(record){
     </div>
     <div class="sign-cols">
       <div class="sign-col">
-        Penguji
+        Nama Penguji<br>Ustadz/ah
         <div class="sign-name">( ${escapeHtml(record.penguji)} )</div>
       </div>
       <div class="sign-col">
         Waka. Keagamaan
-        <div class="sign-name">( Ustadz M. Zaenurrozikin )</div>
+        <div class="sign-name">( Ustadz M. Zaenurrozikin, S.Pd )</div>
       </div>
     </div>
   </div>
@@ -3630,7 +3569,6 @@ async function doExcelExport(){
 function renderDashboard(){
   const totalSiswa = state.siswaList.length;
   const totalGuru = activeGuruList().length;
-  const totalRuangan = allDistinctRooms().length;
   const levelField = siswaLevelField();
   const progLabel = programLabel();
   const belumTilawati = state.siswaList.filter(s=>!s[levelField]).length;
@@ -3774,7 +3712,6 @@ function bindDashboardEvents(){
 }
 
 function findSiswa(id){ return state.siswaList.find(s=>s.id===id); }
-function findGuru(id){ return state.guruList.find(g=>g.id===id); }
 
 // ===== Import data siswa dari file Excel (.xlsx) =====
 // Format kolom: Nama, Kelas, Tilawati (baris pertama = header, boleh nama apa saja).
@@ -4561,7 +4498,7 @@ function backupReminderHtml(){
 }
 
 /* ---- Data Siswa gabungan + edit massal ---- */
-const admSiswa = {q:'', kelas:'', tl:'', th:'', perm:'', page:1, sel:new Set()};
+const admSiswa = {q:'', kelas:'', tl:'', th:'', perm:'', page:1, sel:new Set(), act:'', actVal:''};
 const ADM_PAGE = 50;
 function admFiltered(){
   const q = admSiswa.q.trim().toLowerCase();
@@ -4584,7 +4521,7 @@ function renderAdmSiswaPage(){
         <select id="admTh" style="width:150px;" title="Filter Tahfidz">${opt(LEVEL_LABELS_TAHFIDZ, admSiswa.th, 'Tahfidz')}</select>
         <select id="admPerm" style="width:160px;" title="Filter ruang permanen"><option value="">Semua status ruang</option><option value="ya" ${admSiswa.perm==='ya'?'selected':''}>&#128274; Permanen saja</option><option value="tidak" ${admSiswa.perm==='tidak'?'selected':''}>Bukan permanen</option></select>
       </div>
-      <div style="font-size:11.5px; color:var(--ink-muted); margin:6px 0 10px;">Filter berurutan: kelas, level Tilawati, level Tahfidz, status permanen. Centang siswa lalu pakai tombol di bawah untuk mengubah sekaligus. Tanda &#128274; = ruang permanen (tidak berpindah saat naik tingkat).</div>
+      <div style="font-size:11.5px; color:var(--ink-muted); margin:6px 0 10px;">Tanda &#128274; = ruang permanen (tidak berpindah saat naik tingkat).</div>
       <div id="admSiswaBody"></div>
     </div>`;
 }
@@ -4598,18 +4535,13 @@ function refreshAdmSiswa(resetScroll){
   const items = list.slice(start, start + ADM_PAGE);
   const n = admSiswa.sel.size;
   const allSel = list.length > 0 && list.every(s=>admSiswa.sel.has(s.id));
-  const lv = (labels)=> '<option value="">— pilih —</option><option value="__NONE__">(kosongkan)</option>' + labels.map(l=>`<option value="${escapeAttr(l)}">${escapeHtml(l)}</option>`).join('');
   const rows = items.map(s=>`<tr>
       <td><input type="checkbox" class="admChk" data-id="${escapeAttr(s.id)}" ${admSiswa.sel.has(s.id)?'checked':''}></td>
       <td>${escapeHtml(s.nama)}</td><td>${escapeHtml(s.kelas||'-')}</td>
       <td>${escapeHtml(s.tilawati||'-')}</td><td>${isRoomPermanent(s,'tilawati') ? '<span class="lock-badge" title="Ruang permanen">&#128274;</span>' : ''}${escapeHtml(s.roomOverride||s.assignedRoom||'-')}</td>
       <td>${escapeHtml(s.tahfidz||'-')}</td><td>${isRoomPermanent(s,'tahfidz') ? '<span class="lock-badge" title="Ruang permanen">&#128274;</span>' : ''}${escapeHtml(s.tahfidzRoomOverride||s.tahfidzAssignedRoom||'-')}</td></tr>`).join('');
   const dis = n ? '' : 'disabled';
-  const roomOpts = (prog)=> '<option value="">— pilih ruang —</option><option value="__AUTO__">Otomatis (pembagian sistem)</option>'
-    + admRoomsOf(prog).map(r=>`<option value="${escapeAttr(r)}">${escapeHtml(r)}</option>`).join('');
   const prevScroll = body.querySelector('.table-scroll') ? body.querySelector('.table-scroll').scrollTop : 0;
-  const prevBulk = {};
-  ['admBulkKelas','admBulkTl','admBulkTh','admBulkRoomTl','admBulkRoomTh'].forEach(bid=>{ const el = document.getElementById(bid); if(el) prevBulk[bid] = el.value; });
   body.innerHTML = `
     <div class="toolbar" style="margin-bottom:10px;">
       <label style="display:flex; gap:6px; align-items:center; font-size:13px;"><input type="checkbox" id="admSelAll" ${allSel?'checked':''}> Pilih semua hasil filter (${list.length})</label>
@@ -4617,26 +4549,12 @@ function refreshAdmSiswa(resetScroll){
       <span id="admSelHidden" style="font-size:12px; color:#B45309; font-weight:600;"></span>
       <button class="btn btn-outline btn-sm" id="admClearSel" ${dis}>Batal pilih semua</button>
     </div>
-    <div class="toolbar" style="margin-bottom:12px;">
-      <input type="text" id="admBulkKelas" placeholder="Kelas baru (mis. 4B)" style="width:150px;">
-      <button class="btn btn-outline btn-sm" id="admApplyKelas" ${dis}>Terapkan Kelas</button>
-      <select id="admBulkTl" style="width:140px;">${lv(LEVEL_LABELS)}</select>
-      <button class="btn btn-outline btn-sm" id="admApplyTl" ${dis}>Terapkan Tilawati</button>
-      <select id="admBulkTh" style="width:140px;">${lv(LEVEL_LABELS_TAHFIDZ)}</select>
-      <button class="btn btn-outline btn-sm" id="admApplyTh" ${dis}>Terapkan Tahfidz</button>
-    </div>
-    <div class="toolbar" style="margin-bottom:12px;">
-      <select id="admBulkRoomTl" style="width:150px;">${roomOpts('tilawati')}</select>
-      <button class="btn btn-outline btn-sm" id="admApplyRoomTl" ${dis}>Terapkan Ruang Tilawati</button>
-      <select id="admBulkRoomTh" style="width:150px;">${roomOpts('tahfidz')}</select>
-      <button class="btn btn-outline btn-sm" id="admApplyRoomTh" ${dis}>Terapkan Ruang Tahfidz</button>
-      <button class="btn btn-danger btn-sm" id="admDelSel" ${dis}>&#128465; Hapus terpilih</button>
-    </div>
-    <div class="toolbar" style="margin-bottom:12px;">
-      <button class="btn btn-outline btn-sm" id="admPermTl" ${dis} title="Siswa tetap di ruangnya saat naik tingkat">&#128274; Permanenkan Ruang Tilawati</button>
-      <button class="btn btn-outline btn-sm" id="admUnpermTl" ${dis}>&#128275; Lepas Permanen Tilawati</button>
-      <button class="btn btn-outline btn-sm" id="admPermTh" ${dis} title="Siswa tetap di ruangnya saat naik tingkat">&#128274; Permanenkan Ruang Tahfidz</button>
-      <button class="btn btn-outline btn-sm" id="admUnpermTh" ${dis}>&#128275; Lepas Permanen Tahfidz</button>
+    <div class="act-hint" id="admActHint">Centang siswa di tabel, lalu pilih aksinya di kotak biru yang akan muncul (kelas, tingkatan, ruang, permanen, hapus).</div>
+    <div class="act-bar" id="admActBar" hidden>
+      <span class="act-title" id="admActTitle">0 siswa dipilih</span>
+      <select id="admActSel">${admActionOptionsHtml(admSiswa.act)}</select>
+      <span id="admActValWrap">${admActValueHtml(admSiswa.act, admSiswa.actVal)}</span>
+      <button class="btn btn-primary btn-sm" id="admActGo">Terapkan</button>
     </div>
     <div class="table-scroll"><table class="data-table">
       <thead><tr><th style="width:36px;"></th><th>Nama</th><th>Kelas</th><th>Tilawati</th><th>Ruang Tilawati</th><th>Tahfidz</th><th>Ruang Tahfidz</th></tr></thead>
@@ -4658,13 +4576,14 @@ function refreshAdmSiswa(resetScroll){
     const hiddenCnt = Array.from(admSiswa.sel).filter(id=>!visibleIds.has(id)).length;
     const hid = document.getElementById('admSelHidden');
     if(hid) hid.textContent = hiddenCnt ? `(${hiddenCnt} terpilih sedang tidak tampil karena filter)` : '';
-    ['admApplyKelas','admApplyTl','admApplyTh','admApplyRoomTl','admApplyRoomTh','admDelSel','admClearSel','admPermTl','admUnpermTl','admPermTh','admUnpermTh'].forEach(bid=>{
-      const b = document.getElementById(bid); if(b) b.disabled = !cnt;
-    });
+    const clr = document.getElementById('admClearSel'); if(clr) clr.disabled = !cnt;
+    const bar = document.getElementById('admActBar'), hint = document.getElementById('admActHint'), ttl = document.getElementById('admActTitle');
+    if(bar) bar.hidden = !cnt;
+    if(hint) hint.hidden = !!cnt;
+    if(ttl) ttl.textContent = cnt + ' siswa dipilih';
     const all = document.getElementById('admSelAll');
     if(all) all.checked = list.length > 0 && list.every(x=>admSiswa.sel.has(x.id));
   };
-  Object.keys(prevBulk).forEach(bid=>{ const el = document.getElementById(bid); if(el) el.value = prevBulk[bid]; });
   const newScroll = body.querySelector('.table-scroll');
   if(newScroll && prevScroll && !resetScroll) newScroll.scrollTop = prevScroll;
   document.getElementById('admSelAll').addEventListener('change', (e)=>{
@@ -4685,16 +4604,82 @@ function refreshAdmSiswa(resetScroll){
     syncAdmSelection();
   });
   syncAdmSelection();
-  document.getElementById('admApplyKelas').addEventListener('click', ()=>admBulkApply('kelas', document.getElementById('admBulkKelas').value));
-  document.getElementById('admApplyTl').addEventListener('click', ()=>admBulkApply('tilawati', document.getElementById('admBulkTl').value));
-  document.getElementById('admApplyTh').addEventListener('click', ()=>admBulkApply('tahfidz', document.getElementById('admBulkTh').value));
-  document.getElementById('admApplyRoomTl').addEventListener('click', ()=>admBulkRoom('tilawati', document.getElementById('admBulkRoomTl').value));
-  document.getElementById('admApplyRoomTh').addEventListener('click', ()=>admBulkRoom('tahfidz', document.getElementById('admBulkRoomTh').value));
-  document.getElementById('admDelSel').addEventListener('click', admDeleteSelected);
-  document.getElementById('admPermTl').addEventListener('click', ()=>admBulkPermanen('tilawati', true));
-  document.getElementById('admUnpermTl').addEventListener('click', ()=>admBulkPermanen('tilawati', false));
-  document.getElementById('admPermTh').addEventListener('click', ()=>admBulkPermanen('tahfidz', true));
-  document.getElementById('admUnpermTh').addEventListener('click', ()=>admBulkPermanen('tahfidz', false));
+  const actSel = document.getElementById('admActSel');
+  actSel.addEventListener('change', ()=>{
+    admSiswa.act = actSel.value; admSiswa.actVal = '';
+    document.getElementById('admActValWrap').innerHTML = admActValueHtml(admSiswa.act, '');
+    bindAdmActVal();
+    const go = document.getElementById('admActGo');
+    const def = ADM_ACTIONS.find(x=>x.k === admSiswa.act);
+    go.className = 'btn btn-sm ' + (def && def.danger ? 'btn-danger' : 'btn-primary');
+    go.textContent = (def && def.danger) ? 'Hapus' : 'Terapkan';
+  });
+  bindAdmActVal();
+  {
+    const go = document.getElementById('admActGo');
+    const def = ADM_ACTIONS.find(x=>x.k === admSiswa.act);
+    if(def && def.danger){ go.className = 'btn btn-sm btn-danger'; go.textContent = 'Hapus'; }
+    go.addEventListener('click', admRunAction);
+  }
+}
+/* ---- Bar aksi massal (satu kotak, bukan belasan tombol) ---- */
+const ADM_ACTIONS = [
+  {k:'kelas',    g:'Data siswa',      t:'Ubah kelas',                     kind:'text'},
+  {k:'tl',       g:'Data siswa',      t:'Ubah tingkatan Tilawati',        kind:'level-tl'},
+  {k:'th',       g:'Data siswa',      t:'Ubah tingkatan Tahfidz',         kind:'level-th'},
+  {k:'roomTl',   g:'Ruang',           t:'Tempatkan di ruang Tilawati',    kind:'room-tl'},
+  {k:'roomTh',   g:'Ruang',           t:'Tempatkan di ruang Tahfidz',     kind:'room-th'},
+  {k:'permTl',   g:'Ruang permanen',  t:'Permanenkan ruang Tilawati',     kind:'none', note:'Siswa tetap di ruangnya saat naik tingkat.'},
+  {k:'unpermTl', g:'Ruang permanen',  t:'Lepas permanen ruang Tilawati',  kind:'none', note:'Ruang berikutnya dicari ulang saat naik tingkat.'},
+  {k:'permTh',   g:'Ruang permanen',  t:'Permanenkan ruang Tahfidz',      kind:'none', note:'Siswa tetap di ruangnya saat naik tingkat.'},
+  {k:'unpermTh', g:'Ruang permanen',  t:'Lepas permanen ruang Tahfidz',   kind:'none', note:'Ruang berikutnya dicari ulang saat naik tingkat.'},
+  {k:'del',      g:'Berbahaya',       t:'Hapus siswa terpilih',           kind:'none', danger:true, note:'Akan diminta konfirmasi.'},
+];
+function admActionOptionsHtml(cur){
+  let out = '<option value="">Pilih aksi...</option>', grp = '';
+  ADM_ACTIONS.forEach(a=>{
+    if(a.g !== grp){ if(grp) out += '</optgroup>'; out += `<optgroup label="${escapeAttr(a.g)}">`; grp = a.g; }
+    out += `<option value="${a.k}" ${cur === a.k ? 'selected' : ''}>${escapeHtml(a.t)}</option>`;
+  });
+  return out + (grp ? '</optgroup>' : '');
+}
+function admActValueHtml(act, cur){
+  const def = ADM_ACTIONS.find(x=>x.k === act);
+  if(!def) return '<span class="act-note">Pilih aksi terlebih dulu.</span>';
+  const sel = (inner)=>`<select id="admActVal">${inner}</select>`;
+  const lv = (labels)=> '<option value="">— pilih —</option><option value="__NONE__">(kosongkan)</option>' + labels.map(l=>`<option value="${escapeAttr(l)}" ${cur===l?'selected':''}>${escapeHtml(l)}</option>`).join('');
+  const rm = (prog)=> '<option value="">— pilih ruang —</option><option value="__AUTO__">Otomatis (pembagian sistem)</option>' + admRoomsOf(prog).map(r=>`<option value="${escapeAttr(r)}" ${cur===r?'selected':''}>${escapeHtml(r)}</option>`).join('');
+  switch(def.kind){
+    case 'text':     return `<input type="text" id="admActVal" placeholder="Kelas baru, mis. 4B" value="${escapeAttr(cur||'')}">`;
+    case 'level-tl': return sel(lv(LEVEL_LABELS));
+    case 'level-th': return sel(lv(LEVEL_LABELS_TAHFIDZ));
+    case 'room-tl':  return sel(rm('tilawati'));
+    case 'room-th':  return sel(rm('tahfidz'));
+    default:         return `<span class="act-note">${escapeHtml(def.note || '')}</span>`;
+  }
+}
+function bindAdmActVal(){
+  const v = document.getElementById('admActVal');
+  if(!v) return;
+  const save = ()=>{ admSiswa.actVal = v.value; };
+  v.addEventListener('input', save); v.addEventListener('change', save);
+}
+async function admRunAction(){
+  const a = admSiswa.act;
+  if(!a){ await showAlert('Pilih aksinya dulu.'); return; }
+  const v = (document.getElementById('admActVal') || {}).value;
+  switch(a){
+    case 'kelas':    return admBulkApply('kelas', v);
+    case 'tl':       return admBulkApply('tilawati', v);
+    case 'th':       return admBulkApply('tahfidz', v);
+    case 'roomTl':   return admBulkRoom('tilawati', v);
+    case 'roomTh':   return admBulkRoom('tahfidz', v);
+    case 'permTl':   return admBulkPermanen('tilawati', true);
+    case 'unpermTl': return admBulkPermanen('tilawati', false);
+    case 'permTh':   return admBulkPermanen('tahfidz', true);
+    case 'unpermTh': return admBulkPermanen('tahfidz', false);
+    case 'del':      return admDeleteSelected();
+  }
 }
 /* ---- Penempatan ruang massal (Tilawati & Tahfidz) ---- */
 const ADM_ROOM_CFG = {
@@ -5084,7 +5069,6 @@ async function handleLogin(e){
 
   const emailOrUsername = document.getElementById('loginUsername').value.trim();
   const password = document.getElementById('loginPassword').value;
-  const namaPengujiInput = document.getElementById('loginPengujiName').value.trim();
   errBox.textContent = '';
   if(submitBtn) submitBtn.disabled = true;
 
@@ -5111,10 +5095,9 @@ async function handleLogin(e){
         if(submitBtn) submitBtn.disabled = false;
         return;
       }
-      let pengujiName = namaPengujiInput || profile.name || '';
+      const pengujiName = String(profile.name || '').trim();
       if(profile.role === 'penguji' && !pengujiName){
-        document.getElementById('loginPengujiNameWrap').style.display = 'block';
-        errBox.textContent = 'Mohon isi nama Anda untuk tanda tangan blanko penilaian, lalu klik Masuk lagi.';
+        errBox.textContent = 'Nama penguji belum diisi di data akun (field "name" pada users/' + cred.user.uid + '). Hubungi admin sekolah.';
         await firebaseAuth.signOut();
         if(submitBtn) submitBtn.disabled = false;
         return;
@@ -5128,25 +5111,11 @@ async function handleLogin(e){
     return;
   }
 
-  // ---- Jalur 2 (SEMENTARA / transisi): akun lama hardcoded ----
-  if(!LEGACY_LOGIN_ENABLED){
-    if(submitBtn) submitBtn.disabled = false;
-    errBox.textContent = 'Login dengan username lama sudah dinonaktifkan. Gunakan email yang terdaftar di Firebase Authentication.';
-    return;
-  }
-  const account = ACCOUNTS.find(a => a.username.toLowerCase() === emailOrUsername.toLowerCase() && a.password === password);
-  if(!account){
-    fail('Username atau password salah. Coba lagi.');
-    return;
-  }
-  if(account.role === 'penguji' && !namaPengujiInput){
-    if(submitBtn) submitBtn.disabled = false;
-    document.getElementById('loginPengujiNameWrap').style.display = 'block';
-    errBox.textContent = 'Mohon isi nama Anda untuk tanda tangan blanko penilaian.';
-    return;
-  }
+  // Hanya login Firebase yang didukung.
   if(submitBtn) submitBtn.disabled = false;
-  proceedLogin(account.role, namaPengujiInput, 'legacy');
+  errBox.textContent = looksLikeEmail
+    ? 'Layanan login belum siap. Periksa koneksi internet lalu muat ulang halaman.'
+    : 'Masukkan alamat email akun Anda.';
 }
 
 function handleLogout(){
@@ -5160,18 +5129,27 @@ function handleLogout(){
   try{ sessionStorage.removeItem('gens-ulba-auth'); }catch(e){ /* abaikan */ }
   if(firebaseAuth && firebaseAuth.currentUser) firebaseAuth.signOut().catch(()=>{});
   document.getElementById('loginForm').reset();
+  setPasswordVisible(false);
   document.getElementById('loginError').textContent = '';
-  document.getElementById('loginPengujiNameWrap').style.display = 'none';
   document.getElementById('app').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
 }
 
 document.getElementById('loginForm').addEventListener('submit', handleLogin);
-document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-document.getElementById('loginUsername').addEventListener('input', (e)=>{
-  const wrap = document.getElementById('loginPengujiNameWrap');
-  if(e.target.value.trim().toLowerCase() === 'penguji') wrap.style.display = 'block';
+function setPasswordVisible(show){
+  const inp = document.getElementById('loginPassword');
+  const btn = document.getElementById('togglePassword');
+  if(!inp || !btn) return;
+  inp.type = show ? 'text' : 'password';
+  btn.classList.toggle('showing', show);
+  const label = show ? 'Sembunyikan password' : 'Tampilkan password';
+  btn.setAttribute('aria-label', label);
+  btn.title = label;
+}
+document.getElementById('togglePassword').addEventListener('click', ()=>{
+  setPasswordVisible(document.getElementById('loginPassword').type === 'password');
 });
+document.getElementById('logoutBtn').addEventListener('click', handleLogout);
 
 /* ======================= PILIH PROGRAM (sebelum login) ======================= */
 function selectProgram(program){
@@ -5227,7 +5205,13 @@ async function restoreSession(){
     if(!raw) return false;
     const saved = JSON.parse(raw);
     if(!saved || !saved.role) return false;
-    if(saved.authMode === 'firebase') await waitForFirebaseAuthReady();
+    // Sesi hanya sah bila akun Firebase masih login DAN peran di server sama dengan yang tersimpan.
+    // Dengan begitu data sesi yang diubah manual lewat console browser tidak bisa dipakai masuk.
+    if(saved.authMode !== 'firebase'){ sessionStorage.removeItem('gens-ulba-auth'); return false; }
+    await waitForFirebaseAuthReady();
+    if(!firebaseAuth || !firebaseAuth.currentUser){ sessionStorage.removeItem('gens-ulba-auth'); return false; }
+    const prof = await fetchUserProfile(firebaseAuth.currentUser.uid);
+    if(!prof || prof.role !== saved.role){ sessionStorage.removeItem('gens-ulba-auth'); return false; }
     state.role = saved.role;
     state.adminMode = !!saved.adminMode && saved.role === 'admin';
     if(state.adminMode) state.loginMode = 'administrator';
