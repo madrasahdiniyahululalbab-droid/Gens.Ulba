@@ -444,9 +444,12 @@
   .pw-toggle:hover{color:var(--teal-dark); background:rgba(0,0,0,0.05);}
   .pw-toggle:focus-visible{outline:2px solid var(--teal); outline-offset:1px;}
   .pw-toggle svg{width:20px; height:20px; display:block;}
-  .pw-toggle .eye-off{display:none;}
-  .pw-toggle.showing .eye-on{display:none;}
-  .pw-toggle.showing .eye-off{display:block;}
+  .pw-toggle .eye-off{display:none !important;}
+  .pw-toggle.showing .eye-on{display:none !important;}
+  .pw-toggle.showing .eye-off{display:block !important;}
+  /* Sembunyikan ikon "lihat password" bawaan browser supaya tidak dobel dengan ikon sendiri */
+  .pw-wrap input::-ms-reveal, .pw-wrap input::-ms-clear{display:none !important; width:0; height:0;}
+  .pw-wrap input::-webkit-credentials-auto-fill-button{visibility:hidden; pointer-events:none; position:absolute; right:0;}
   .login-error{color:var(--rose); font-size:12.5px; min-height:18px; margin-top:10px; text-align:left;}
   .login-hint{font-size:11.5px; color:var(--ink-muted); margin-top:16px;}
 
@@ -479,6 +482,19 @@
     background:#fff; border-radius:14px; max-width:360px; width:100%;
     padding:22px 22px 18px; box-shadow:0 20px 50px rgba(0,0,0,0.3);
   }
+  .topbar-avatar{overflow:hidden; background-size:cover; background-position:center; background-repeat:no-repeat;}
+  .modal-box.prof-modal{max-width:440px; text-align:left; max-height:92vh; overflow-y:auto;}
+  .prof-title{font-family:var(--font-display); font-size:18px; font-weight:700; margin-bottom:14px;}
+  .prof-photo-row{display:flex; align-items:center; gap:16px; margin-bottom:16px;}
+  .prof-photo{width:84px; height:84px; border-radius:50%; background:var(--teal) center/cover no-repeat; color:#fff; display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:700; flex-shrink:0; border:3px solid var(--teal-soft);}
+  .prof-photo-actions{display:flex; gap:8px; flex-wrap:wrap;}
+  .prof-field{margin-bottom:12px;}
+  .prof-field label{font-size:12.5px; font-weight:600; color:var(--ink-muted); display:block; margin-bottom:5px;}
+  .prof-field .login-input[readonly]{background:var(--bg); color:var(--ink-muted); cursor:not-allowed;}
+  .prof-row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .prof-msg{font-size:12.5px; min-height:18px; margin:2px 0 10px;}
+  .prof-msg.err{color:var(--rose);}
+  @media (max-width:560px){ .prof-row2{grid-template-columns:1fr;} }
   .modal-message{font-size:14px; line-height:1.5; margin-bottom:18px; white-space:pre-line;}
   .modal-buttons{display:flex; gap:10px; justify-content:flex-end;}
 
@@ -651,12 +667,57 @@
             <div class="topbar-user-role" id="topbarUserRole">Active Workspace</div>
           </div>
         </div>
-        <div id="userDropdown" class="topbar-dropdown hidden" style="min-width:160px;">
+        <div id="userDropdown" class="topbar-dropdown hidden" style="min-width:190px;">
+          <div class="topbar-dropdown-item" id="btnProfilTop">&#128100; Profil Saya</div>
+          <div class="topbar-dropdown-item" id="btnPasswordTop">&#128273; Ganti Password</div>
           <div class="topbar-dropdown-item" id="btnLogoutTop">&#128682; Keluar</div>
         </div>
       </div>
     </div>
     <div id="content"></div>
+  </div>
+</div>
+
+<!-- ===================== PROFIL SAYA ===================== -->
+<div id="profileOverlay" class="modal-overlay hidden">
+  <div class="modal-box prof-modal">
+    <div class="prof-title">Profil Saya</div>
+    <div class="prof-photo-row">
+      <div id="profPhotoPreview" class="prof-photo">A</div>
+      <div>
+        <input type="file" id="profPhotoInput" accept="image/*" hidden>
+        <div class="prof-photo-actions">
+          <button type="button" class="btn btn-outline btn-sm" id="btnProfPhotoPick">Pilih Foto</button>
+          <button type="button" class="btn btn-outline btn-sm" id="btnProfPhotoDel">Hapus</button>
+        </div>
+        <div style="font-size:11.5px; color:var(--ink-muted); margin-top:6px;">Foto otomatis dipotong persegi &amp; diperkecil.</div>
+      </div>
+    </div>
+    <div class="prof-field"><label for="profEmail">Email (tidak bisa diubah)</label><input type="text" id="profEmail" class="login-input" readonly></div>
+    <div class="prof-field"><label for="profNama">Nama Lengkap</label><input type="text" id="profNama" class="login-input" maxlength="100" autocomplete="name" placeholder="Nama lengkap beserta gelar"></div>
+    <div class="prof-row2">
+      <div class="prof-field"><label for="profTempat">Tempat Lahir</label><input type="text" id="profTempat" class="login-input" maxlength="60" placeholder="Mis. Banyuwangi"></div>
+      <div class="prof-field"><label for="profTanggal">Tanggal Lahir</label><input type="date" id="profTanggal" class="login-input"></div>
+    </div>
+    <div class="prof-field"><label for="profJabatan">Jabatan</label><input type="text" id="profJabatan" class="login-input" maxlength="80" placeholder="Mis. Guru Tilawati"></div>
+    <div id="profMsg" class="prof-msg"></div>
+    <div class="modal-buttons">
+      <button type="button" class="btn btn-outline" id="btnProfCancel">Batal</button>
+      <button type="button" class="btn btn-primary" id="btnProfSave">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== GANTI PASSWORD ===================== -->
+<div id="passwordOverlay" class="modal-overlay hidden">
+  <div class="modal-box prof-modal" style="max-width:400px;">
+    <div class="prof-title">Ganti Password</div>
+    <div id="pwBody"></div>
+    <div id="pwMsg" class="prof-msg"></div>
+    <div class="modal-buttons">
+      <button type="button" class="btn btn-outline" id="btnPwCancel">Batal</button>
+      <button type="button" class="btn btn-primary" id="btnPwSave">Ganti Password</button>
+    </div>
   </div>
 </div>
 
@@ -1677,7 +1738,11 @@ function updateTopbarWidgets(){
   const avatarEl = document.getElementById('topbarAvatarInitial');
   if(nameEl) nameEl.textContent = nameText;
   if(roleEl) roleEl.textContent = roleText;
-  if(avatarEl) avatarEl.textContent = (nameText.trim()[0] || 'A').toUpperCase();
+  if(avatarEl){
+    const foto = state.profile && typeof state.profile.foto === 'string' && state.profile.foto.indexOf('data:image/') === 0 ? state.profile.foto : '';
+    if(foto){ avatarEl.style.backgroundImage = 'url("' + foto + '")'; avatarEl.textContent = ''; }
+    else{ avatarEl.style.backgroundImage = ''; avatarEl.textContent = (nameText.trim()[0] || 'A').toUpperCase(); }
+  }
 
   const body = document.getElementById('notifDropdownBody');
   const dot = document.getElementById('notifDot');
@@ -4943,6 +5008,218 @@ document.addEventListener('click', (e)=>{
   if(userBox && !userBox.contains(e.target) && !document.getElementById('topbarUserBtn').contains(e.target)) userBox.classList.add('hidden');
 });
 
+/* ======================= PROFIL SAYA & GANTI PASSWORD ======================= */
+// Data profil disimpan di collection 'profiles/{uid}' (TERPISAH dari 'users/'),
+// jadi pengguna hanya bisa mengubah profilnya sendiri dan tidak bisa menyentuh role.
+async function loadMyProfile(){
+  state.profile = null;
+  try{
+    const u = firebaseAuth && firebaseAuth.currentUser;
+    if(!u || !firestoreDb) return;
+    const doc = await firestoreDb.collection('profiles').doc(u.uid).get();
+    state.profile = doc.exists ? doc.data() : {};
+  }catch(e){
+    state.profile = null;   // aturan Firestore belum mengizinkan / jaringan bermasalah: abaikan saja
+  }
+  updateTopbarWidgets();
+}
+
+function localTodayISO(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function resizeImageToDataUrl(file, size){
+  return new Promise((resolve, reject)=>{
+    if(!file || !/^image\//.test(file.type)) return reject(new Error('Pilih file gambar (JPG/PNG).'));
+    if(file.size > 15 * 1024 * 1024) return reject(new Error('Ukuran foto terlalu besar (maks. 15 MB).'));
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = ()=>{
+      const min = Math.min(img.width, img.height);
+      const sx = (img.width - min) / 2, sy = (img.height - min) / 2;
+      const cv = document.createElement('canvas');
+      cv.width = cv.height = size;
+      cv.getContext('2d').drawImage(img, sx, sy, min, min, 0, 0, size, size);
+      URL.revokeObjectURL(url);
+      resolve(cv.toDataURL('image/jpeg', 0.82));
+    };
+    img.onerror = ()=>{ URL.revokeObjectURL(url); reject(new Error('Foto tidak bisa dibaca. Coba format JPG atau PNG.')); };
+    img.src = url;
+  });
+}
+
+let profDraftFoto = '';
+function renderProfPhoto(){
+  const box = document.getElementById('profPhotoPreview');
+  if(!box) return;
+  if(profDraftFoto){
+    box.style.backgroundImage = 'url("' + profDraftFoto + '")';
+    box.textContent = '';
+  }else{
+    box.style.backgroundImage = '';
+    const nm = (document.getElementById('profNama').value || state.pengujiName || 'A').trim();
+    box.textContent = (nm[0] || 'A').toUpperCase();
+  }
+}
+
+function openProfileModal(){
+  const u = firebaseAuth && firebaseAuth.currentUser;
+  if(!u) return;
+  const p = state.profile || {};
+  profDraftFoto = (typeof p.foto === 'string' && p.foto.indexOf('data:image/') === 0) ? p.foto : '';
+  document.getElementById('profEmail').value = u.email || '';
+  document.getElementById('profNama').value = p.namaLengkap || state.pengujiName || '';
+  document.getElementById('profTempat').value = p.tempatLahir || '';
+  document.getElementById('profTanggal').value = p.tanggalLahir || '';
+  document.getElementById('profTanggal').max = localTodayISO();
+  document.getElementById('profJabatan').value = p.jabatan || '';
+  document.getElementById('profMsg').textContent = '';
+  document.getElementById('profMsg').classList.remove('err');
+  renderProfPhoto();
+  document.getElementById('profileOverlay').classList.remove('hidden');
+}
+function closeProfileModal(){ document.getElementById('profileOverlay').classList.add('hidden'); }
+
+async function saveProfile(){
+  const u = firebaseAuth && firebaseAuth.currentUser;
+  const msg = document.getElementById('profMsg');
+  const btn = document.getElementById('btnProfSave');
+  const fail = (t)=>{ msg.textContent = t; msg.classList.add('err'); };
+  msg.classList.remove('err'); msg.textContent = '';
+  if(!u || !firestoreDb) return fail('Layanan belum siap. Muat ulang halaman lalu coba lagi.');
+  const data = {
+    namaLengkap: document.getElementById('profNama').value.trim().slice(0, 100),
+    tempatLahir: document.getElementById('profTempat').value.trim().slice(0, 60),
+    tanggalLahir: document.getElementById('profTanggal').value || '',
+    jabatan: document.getElementById('profJabatan').value.trim().slice(0, 80),
+    foto: profDraftFoto || ''
+  };
+  if(!data.namaLengkap) return fail('Nama lengkap wajib diisi.');
+  if(data.tanggalLahir && data.tanggalLahir > localTodayISO()) return fail('Tanggal lahir tidak boleh di masa depan.');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+  try{
+    await firestoreDb.collection('profiles').doc(u.uid).set(Object.assign({}, data, {
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }));
+    state.profile = data;
+    updateTopbarWidgets();
+    closeProfileModal();
+    showAlert('Profil berhasil disimpan.');
+  }catch(e){
+    fail(e && e.code === 'permission-denied'
+      ? 'Belum diizinkan oleh aturan Firestore (collection profiles). Hubungi admin sekolah.'
+      : 'Gagal menyimpan. Periksa koneksi internet lalu coba lagi.');
+  }
+  btn.disabled = false; btn.textContent = 'Simpan';
+}
+
+function pwFieldHtml(id, label, autocomplete){
+  return `
+    <div class="prof-field">
+      <label for="${id}">${label}</label>
+      <div class="pw-wrap">
+        <input type="password" id="${id}" class="login-input" autocomplete="${autocomplete}">
+        <button type="button" class="pw-toggle" data-pw-target="${id}" aria-label="Tampilkan password" title="Tampilkan password">
+          <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a19.8 19.8 0 0 1 5.06-5.94M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 7 11 7a19.7 19.7 0 0 1-3.17 4.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
+    </div>`;
+}
+function openPasswordModal(){
+  document.getElementById('pwBody').innerHTML =
+    pwFieldHtml('pwOld', 'Password Lama', 'current-password') +
+    pwFieldHtml('pwNew', 'Password Baru (minimal 8 karakter)', 'new-password') +
+    pwFieldHtml('pwNew2', 'Ulangi Password Baru', 'new-password');
+  const msg = document.getElementById('pwMsg');
+  msg.textContent = ''; msg.classList.remove('err');
+  document.getElementById('passwordOverlay').classList.remove('hidden');
+  document.getElementById('pwOld').focus();
+}
+function closePasswordModal(){
+  document.getElementById('passwordOverlay').classList.add('hidden');
+  document.getElementById('pwBody').innerHTML = '';   // kosongkan supaya password tidak tertinggal di halaman
+}
+
+async function submitPasswordChange(){
+  const u = firebaseAuth && firebaseAuth.currentUser;
+  const msg = document.getElementById('pwMsg');
+  const btn = document.getElementById('btnPwSave');
+  const fail = (t)=>{ msg.textContent = t; msg.classList.add('err'); };
+  msg.classList.remove('err'); msg.textContent = '';
+  if(!u || !u.email) return fail('Sesi login tidak ditemukan. Silakan masuk ulang.');
+  const oldPw = document.getElementById('pwOld').value;
+  const n1 = document.getElementById('pwNew').value;
+  const n2 = document.getElementById('pwNew2').value;
+  if(!oldPw || !n1 || !n2) return fail('Semua kolom wajib diisi.');
+  if(n1.length < 8) return fail('Password baru minimal 8 karakter.');
+  if(n1 === oldPw) return fail('Password baru tidak boleh sama dengan password lama.');
+  if(n1 !== n2) return fail('Konfirmasi password baru tidak sama.');
+  btn.disabled = true; btn.textContent = 'Memproses...';
+  try{
+    const cred = firebase.auth.EmailAuthProvider.credential(u.email, oldPw);
+    await u.reauthenticateWithCredential(cred);
+    await u.updatePassword(n1);
+    closePasswordModal();
+    showAlert('Password berhasil diganti. Gunakan password baru saat login berikutnya.');
+  }catch(e){
+    const code = (e && e.code) || '';
+    if(code === 'auth/wrong-password' || code === 'auth/invalid-credential' || code === 'auth/invalid-login-credentials') fail('Password lama salah.');
+    else if(code === 'auth/too-many-requests') fail('Terlalu banyak percobaan. Coba lagi beberapa menit lagi.');
+    else if(code === 'auth/weak-password') fail('Password baru terlalu lemah. Gunakan kombinasi huruf dan angka.');
+    else if(code === 'auth/network-request-failed') fail('Koneksi internet bermasalah. Coba lagi.');
+    else fail('Gagal mengganti password. Coba lagi atau hubungi admin sekolah.');
+  }
+  btn.disabled = false; btn.textContent = 'Ganti Password';
+}
+
+document.getElementById('btnProfilTop').addEventListener('click', ()=>{
+  document.getElementById('userDropdown').classList.add('hidden');
+  openProfileModal();
+});
+document.getElementById('btnPasswordTop').addEventListener('click', ()=>{
+  document.getElementById('userDropdown').classList.add('hidden');
+  openPasswordModal();
+});
+document.getElementById('btnProfCancel').addEventListener('click', closeProfileModal);
+document.getElementById('btnProfSave').addEventListener('click', saveProfile);
+document.getElementById('btnPwCancel').addEventListener('click', closePasswordModal);
+document.getElementById('btnPwSave').addEventListener('click', submitPasswordChange);
+document.getElementById('btnProfPhotoPick').addEventListener('click', ()=>document.getElementById('profPhotoInput').click());
+document.getElementById('btnProfPhotoDel').addEventListener('click', ()=>{ profDraftFoto = ''; renderProfPhoto(); });
+document.getElementById('profNama').addEventListener('input', ()=>{ if(!profDraftFoto) renderProfPhoto(); });
+document.getElementById('profPhotoInput').addEventListener('change', async (e)=>{
+  const file = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if(!file) return;
+  const msg = document.getElementById('profMsg');
+  try{
+    profDraftFoto = await resizeImageToDataUrl(file, 256);
+    msg.textContent = ''; msg.classList.remove('err');
+    renderProfPhoto();
+  }catch(err){
+    msg.textContent = err.message || 'Foto tidak bisa dipakai.'; msg.classList.add('err');
+  }
+});
+// Tombol mata untuk kolom password di jendela Ganti Password.
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest && e.target.closest('.pw-toggle[data-pw-target]');
+  if(!btn) return;
+  const inp = document.getElementById(btn.getAttribute('data-pw-target'));
+  if(!inp) return;
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.classList.toggle('showing', show);
+  const label = show ? 'Sembunyikan password' : 'Tampilkan password';
+  btn.setAttribute('aria-label', label); btn.title = label;
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key !== 'Escape') return;
+  if(!document.getElementById('profileOverlay').classList.contains('hidden')) closeProfileModal();
+  if(!document.getElementById('passwordOverlay').classList.contains('hidden')) closePasswordModal();
+});
+
 /* ======================= LOGIN / LOGOUT ======================= */
 function applyLogoImages(){
   document.querySelectorAll('img[src="LOGO_COMBINED_PLACEHOLDER"]').forEach(img=>{ img.src = LOGO_COMBINED_DATA; });
@@ -5131,6 +5408,8 @@ function handleLogout(){
   state.role = null;
   state.adminMode = false;
   state.pengujiName = '';
+  state.profile = null;
+  ['profileOverlay','passwordOverlay'].forEach(id=>{ const o = document.getElementById(id); if(o) o.classList.add('hidden'); });
   try{ sessionStorage.removeItem('gens-ulba-auth'); }catch(e){ /* abaikan */ }
   if(firebaseAuth && firebaseAuth.currentUser) firebaseAuth.signOut().catch(()=>{});
   document.getElementById('loginForm').reset();
@@ -5279,6 +5558,7 @@ async function seedGuruTahfidzFromTilawati(){
 }
 
 async function startApp(){
+  loadMyProfile();   // ambil foto & data profil akun yang sedang login (latar belakang)
   if(appStarted){ render(); return; }
   appStarted = true;
   const c = document.getElementById('content');
