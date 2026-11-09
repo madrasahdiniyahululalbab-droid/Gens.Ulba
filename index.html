@@ -4073,7 +4073,7 @@ function renderDashboard(){
 
   // ---- Perlu perhatian & penilaian terbaru ----
   const perluPerhatian = state.siswaList.filter(s=>!s[levelField] || kosong(s.kelas));
-  const attnRows = perluPerhatian.map(s=>{
+  const studentAttentionRows = perluPerhatian.map(s=>{
     const kurang = [];
     if(kosong(s.kelas)) kurang.push('kelas');
     if(!s[levelField]) kurang.push(progLabel);
@@ -4082,6 +4082,16 @@ function renderDashboard(){
       <span class="uj-row-sub">Belum ada ${kurang.join(' & ')}</span>
     </div>`;
   }).join('');
+  const roomAttentionRows = overCapacityWarnings.map(w=>`
+    <div class="uj-row" data-dash-go="pembagian">
+      <span class="uj-row-main" style="display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-flex;color:var(--rose);">${ic('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/>')}</span>
+        ${escapeHtml(w.split(':')[0])}
+      </span>
+      <span class="uj-row-sub">${escapeHtml(w.split(':').slice(1).join(':').trim())} · Periksa pembagian ruangan</span>
+    </div>
+  `).join('');
+  const attnRows = roomAttentionRows + studentAttentionRows;
   const terbaru = penilaianAktif.slice().sort((a,b)=>(b.ts||0)-(a.ts||0)).slice(0,5);
   const recentRows = terbaru.map(r=>{
     const h = r.hasil || '';
@@ -4128,17 +4138,6 @@ function renderDashboard(){
       </div>
     </div>
 
-    ${overCapacityWarnings.length ? `
-      <div class="banner warn">
-        <span>${ic('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/>')}</span>
-        <div>
-          <strong>Ruangan penuh:</strong><br>
-          ${overCapacityWarnings.join('<br>')}
-        </div>
-      </div>` : `
-      <div class="banner info"><span>${ic('<path d="M20 6 9 17l-5-5"/>')}</span><div>Semua siswa sudah tertampung ruangan.</div></div>
-    `}
-
     <div class="card" style="padding:20px; margin-top:16px;">
       <h2 class="section-title">Laporan Minggu Ini <span class="prog-badge">${progLabel}</span></h2>
       <div class="uj-week">
@@ -4157,7 +4156,7 @@ function renderDashboard(){
     <div class="uj-two" style="margin-top:16px;">
       <div class="card" style="padding:20px;">
         <h2 class="section-title">Perlu Perhatian</h2>
-        ${attnRows || `<div class="empty-state" style="padding:26px 10px;">Semua siswa sudah punya kelas dan ${progLabel}.</div>`}
+        ${attnRows || `<div class="empty-state" style="padding:26px 10px;">Semua siswa sudah tertampung ruangan, memiliki kelas, dan memiliki ${progLabel}.</div>`}
       </div>
       <div class="card" style="padding:20px;">
         <h2 class="section-title">Penilaian Terbaru</h2>
