@@ -1789,7 +1789,7 @@ async function storageSet(key, value){
       localStorage.setItem(LS_PREFIX + key, JSON.stringify(value));
     }
     saveErrorCount = 0;
-    if(key === 'siswa-list' || key === 'guru-list' || key === 'tahfidz-guru-list') schedulePublicIndex();
+    if(pubTriggerKey(key)) schedulePublicIndex();
   }catch(e){
     ok = false;
     reportSaveFailure(key, e);
@@ -1942,7 +1942,7 @@ async function storageTransact(key, mutateFn){
   if(dataLoadFailed) throw new Error('Data awal belum berhasil dimuat; penulisan diblokir.');
   if(firestoreDb){
     const ref = firestoreDb.collection('storage').doc(key);
-    return await firestoreDb.runTransaction(async tx=>{
+    const txResult = await firestoreDb.runTransaction(async tx=>{
       const doc = await tx.get(ref);
       let cur = null;
       if(doc.exists){
@@ -1957,6 +1957,8 @@ async function storageTransact(key, mutateFn){
       });
       return next;
     });
+    if(pubTriggerKey(key)) schedulePublicIndex();
+    return txResult;
   }
   // Mode lokal / tanpa Firebase: hanya satu pengguna, cukup baca lalu tulis.
   const cur = await storageGet(key);
@@ -6290,17 +6292,31 @@ function pubNorm(s){ return String(s||'').toLowerCase().normalize('NFD').replace
 
 /* ---- PENERBITAN (dilakukan Administrator) ---- */
 var _pubPublishTimer = null;
+function pubTriggerKey(k){ return k === 'siswa-list' || k === 'guru-list' || k === 'tahfidz-guru-list' || k === 'room-quota' || k === 'tahfidz-room-quota'; }
 function schedulePublicIndex(){
   if(!firestoreDb || state.role !== 'admin') return;
   clearTimeout(_pubPublishTimer);
   _pubPublishTimer = setTimeout(publishPublicIndex, 4000);
+}
+/* Salinan siswa dengan ruang tetap sudah dihitung untuk KEDUA program, persis seperti yang
+   dilakukan layar admin (ensureRoomAssignments), tetapi pada salinan sehingga data asli
+   tidak berubah. Sinkron penuh (tanpa await) agar tidak mengganggu tampilan admin. */
+function pubEffectiveSiswa(){
+  const prevProg = state.program, prevList = state.siswaList;
+  try{
+    state.siswaList = prevList.map(s=>Object.assign({}, s));
+    ['tilawati','tahfidz'].forEach(p=>{ state.program = p; ensureRoomAssignments(); });
+    return state.siswaList;
+  }finally{
+    state.program = prevProg; state.siswaList = prevList;
+  }
 }
 async function publishPublicIndex(){
   try{
     if(!firestoreDb || state.role !== 'admin' || !state.loaded || dataLoadFailed) return;
     const payload = {
       v:1, ts:Date.now(),
-      s: state.siswaList.map(s=>[s.nama||'', s.kelas||'', s.tilawati||'', s.assignedRoom||'', s.tahfidz||'', s.tahfidzAssignedRoom||'']),
+      s: pubEffectiveSiswa().map(s=>[s.nama||'', s.kelas||'', s.tilawati||'', s.roomOverride||s.assignedRoom||'', s.tahfidz||'', s.tahfidzRoomOverride||s.tahfidzAssignedRoom||'']),
       gTl: state.guruList.map(g=>[g.nama||'', g.kode||'', g.ruangan||'']),
       gTh: (state.guruListTahfidz||[]).map(g=>[g.nama||'', g.kode||'', g.ruangan||''])
     };
@@ -6320,8 +6336,8 @@ function pubIngest(p){
   PUB.gTh = (p.gTh||[]).map(a=>({nama:a[0], kode:a[1], ruang:a[2], prog:'th', n:pubNorm(a[0]+' '+a[1]+' '+a[2]), nn:pubNorm(a[0])}));
   PUB.ts = p.ts || 0;
   PUB.roomGuru = {tl:{}, th:{}}; PUB.roomSiswa = {tl:{}, th:{}};
-  PUB.gTl.forEach(g=>{ if(g.ruang && g.kode!=='PT'){ (PUB.roomGuru.tl[g.ruang] = PUB.roomGuru.tl[g.ruang]||[]).push(g.nama); } });
-  PUB.gTh.forEach(g=>{ if(g.ruang && g.kode!=='PTh'){ (PUB.roomGuru.th[g.ruang] = PUB.roomGuru.th[g.ruang]||[]).push(g.nama); } });
+  PUB.gTl.forEach(g=>{ if(g.ruang){ (PUB.roomGuru.tl[g.ruang] = PUB.roomGuru.tl[g.ruang]||[]).push(g.nama); } });
+  PUB.gTh.forEach(g=>{ if(g.ruang){ (PUB.roomGuru.th[g.ruang] = PUB.roomGuru.th[g.ruang]||[]).push(g.nama); } });
   PUB.siswa.forEach(s=>{
     if(s.tlR) (PUB.roomSiswa.tl[s.tlR] = PUB.roomSiswa.tl[s.tlR]||[]).push(s);
     if(s.thR) (PUB.roomSiswa.th[s.thR] = PUB.roomSiswa.th[s.thR]||[]).push(s);
@@ -6339,7 +6355,7 @@ async function pubLoad(){
       // Mode lokal (tanpa Firebase): bangun dari penyimpanan perangkat ini
       const [s,g,gt] = await Promise.all([storageGet('siswa-list'), storageGet('guru-list'), storageGet('tahfidz-guru-list')]);
       if(!s || !s.length) PUB.error = 'empty';
-      else pubIngest({ts:Date.now(), s:s.map(x=>[x.nama,x.kelas,x.tilawati,x.assignedRoom,x.tahfidz,x.tahfidzAssignedRoom]),
+      else pubIngest({ts:Date.now(), s:s.map(x=>[x.nama,x.kelas,x.tilawati,x.roomOverride||x.assignedRoom,x.tahfidz,x.tahfidzRoomOverride||x.tahfidzAssignedRoom]),
         gTl:(g||[]).map(x=>[x.nama,x.kode,x.ruangan]), gTh:(gt||[]).map(x=>[x.nama,x.kode,x.ruangan])});
     }
   }catch(e){
@@ -6438,7 +6454,7 @@ function pubRender(){
     rows = pool.filter(g=> tokens.every(t=>g.n.includes(t)));
     rows.sort((a,b)=> (q ? (b.n.startsWith(q) - a.n.startsWith(q)) : 0) || a.nama.localeCompare(b.nama,'id'));
     html = rows.slice(0, PUB.limit).map((g,i)=>{
-      const murid = g.ruang && g.kode !== 'PT' && g.kode !== 'PTh' ? (PUB.roomSiswa[g.prog][g.ruang] || []) : [];
+      const murid = g.ruang ? (PUB.roomSiswa[g.prog][g.ruang] || []) : [];
       return `
       <div class="pub-res" style="--i:${i%12}">
         <div class="pub-av guru">${escapeHtml((g.nama||'?').trim().charAt(0).toUpperCase())}</div>
